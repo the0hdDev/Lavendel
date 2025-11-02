@@ -7,8 +7,7 @@ bin-int
 outgit
 status
 
-
 .DS_Store
 
 Lavendel/vendor/spdlog
-cmake-build-debug
+cmake-build-debugf
