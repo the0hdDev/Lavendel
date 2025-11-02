@@ -9,6 +9,7 @@ status
 
 .DS_Store
 
-Lavendel/vendor/*
-vendor/*
-cmake-build-debugf
+Lavendel/vendor/
+vendor
+
+cmake-build-debug
