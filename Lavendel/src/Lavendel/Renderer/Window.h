@@ -3,6 +3,7 @@
 #include "../Core.h"
 #include <GLFW/glfw3.h>
 #include <string>
+#include "Pipeline.h"
 
 namespace Lavendel {
 
@@ -23,7 +24,7 @@ namespace Lavendel {
             void Shutdown();
         
             GLFWwindow* m_Window;
-
+            Pipeline m_Pipeline{"shaders/shader.vert.spv", "shaders/shader.frag.spv"};
 
             int m_Width, m_Height;
 		    bool m_Resizable;

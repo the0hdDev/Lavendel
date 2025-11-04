@@ -50,3 +50,16 @@ add_subdirectory(Lavendel)
 add_subdirectory(Sandbox)
 
 target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
+
+# Set the working directory for debugging in Visual Studio
+set_target_properties(Sandbox PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin/$<CONFIG>"
+)
+
+# Copy shaders to output directory
+add_custom_command(TARGET Sandbox POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/shaders
+    $<TARGET_FILE_DIR:Sandbox>/shaders
+    COMMENT "Copying shaders to output directory"
+)
