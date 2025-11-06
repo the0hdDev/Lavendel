@@ -1,4 +1,6 @@
 #include "Window.h"
+#include "Device.h"
+#include "Pipeline.h"
 #include "../../Log.h"
 
 namespace Lavendel {
@@ -6,7 +8,8 @@ namespace Lavendel {
 
 		static bool s_GLFWInitialized = false;
 
-		Window::Window(int width, int height, const std::string& title, bool bResizable) : m_Width(width), m_Height(height), m_Title(title), m_Resizable(bResizable)
+		Window::Window(int width, int height, const std::string& title, bool bResizable) 
+			: m_Width(width), m_Height(height), m_Title(title), m_Resizable(bResizable)
 		{
 			Init(width, height, title, bResizable);
 		}
@@ -14,12 +17,15 @@ namespace Lavendel {
 		Window::~Window()
 		{
 			Shutdown();
-		};
-
-		// TODO: Logging
+		}
 
 		void Window::Init(int width, int height, const std::string& title, bool bResizable)
 		{
+			m_Width = width;
+			m_Height = height;
+			m_Title = title;
+			m_Resizable = bResizable;
+
 			if (!s_GLFWInitialized)
 			{
 				if (!glfwInit())
@@ -30,7 +36,6 @@ namespace Lavendel {
 
 				s_GLFWInitialized = true;
 			}
-
 
 			if (!bResizable)
 			{
@@ -47,32 +52,36 @@ namespace Lavendel {
 				return;
 			}
 
-			LV_CORE_INFO("Created Vulkan-compatible window!");
+			// Initialize GPUDevice and Pipeline after m_Window is created
+			m_Device = std::make_unique<GPUDevice>(*this);
+			m_Pipeline = std::make_unique<Pipeline>(*m_Device, 
+													"shaders/shader.vert.spv", 
+													"shaders/shader.frag.spv", 
+													Pipeline::defaultPipelineConfigInfo(m_Width, m_Height));
 		}
 
 		void Window::Shutdown()
 		{
+			// Destroy in reverse order
+			m_Pipeline.reset();
+			m_Device.reset();
+			
 			if (m_Window)
 			{
 				glfwDestroyWindow(m_Window);
-				m_Window = nullptr;
 			}
-
+			
 			glfwTerminate();
-			s_GLFWInitialized = false;
-			LV_CORE_INFO("GLFW terminated");
-
-
 		}
-
 
 		void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface)
 		{
 			if (glfwCreateWindowSurface(instance, m_Window, nullptr, surface) != VK_SUCCESS)
 			{
-				throw std::runtime_error("failed to create window surface!");
 				LV_CORE_ERROR("Failed to create window surface!");
+				throw std::runtime_error("failed to create window surface!");
 			}
 		}
+
 	}
 }

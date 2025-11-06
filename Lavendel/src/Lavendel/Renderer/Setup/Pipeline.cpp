@@ -1,4 +1,5 @@
 #include "Pipeline.h"
+#include "Device.h"
 #include <fstream>
 #include <vector>
 #include <string>
@@ -6,12 +7,16 @@
 namespace Lavendel {
 	namespace RendererAPI {
 
-		Pipeline::Pipeline(const std::string& vertFilepath, const std::string& fragFilePath)
+		Pipeline::Pipeline(GPUDevice& device, const std::string& vertFilepath, const std::string& fragFilePath, const PipelineConfigInfo& configInfo) 
+			: m_Device{ device }
 		{
-			createGraphicsPipeline(vertFilepath, fragFilePath);
+			createGraphicsPipeline(vertFilepath, fragFilePath, configInfo);
 		}
 
-		Pipeline::~Pipeline() = default;
+		Pipeline::~Pipeline()
+		{
+			// Cleanup code here if needed
+		}
 
 		std::vector<char> Pipeline::readFile(const std::string& filepath)
 		{
@@ -33,7 +38,7 @@ namespace Lavendel {
 			return buffer;
 		}
 
-		void Pipeline::createGraphicsPipeline(const std::string& vertShaderPath, const std::string& fragShaderPath)
+		void Pipeline::createGraphicsPipeline(const std::string& vertShaderPath, const std::string& fragShaderPath, const PipelineConfigInfo& configInfo)
 		{
 			auto vertCode = readFile(vertShaderPath);
 			auto fragCode = readFile(fragShaderPath);
@@ -41,5 +46,27 @@ namespace Lavendel {
 			LV_CORE_INFO("Vertex Shader Code Size: {}", vertCode.size());
 			LV_CORE_INFO("Fragment Shader Code Size: {}", fragCode.size());
 		}
+
+		void Pipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule) 
+		{
+			VkShaderModuleCreateInfo createInfo{};
+			createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+			createInfo.codeSize = code.size();
+			createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+
+			if (vkCreateShaderModule(m_Device.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) 
+			{
+				LV_CORE_ERROR("Failed to create shader module!");
+				throw std::runtime_error("failed to create shader module!");
+			}
+		}
+
+		PipelineConfigInfo Pipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height)
+		{
+			PipelineConfigInfo configInfo{};
+
+			return configInfo;
+		}
+
 	}
 }

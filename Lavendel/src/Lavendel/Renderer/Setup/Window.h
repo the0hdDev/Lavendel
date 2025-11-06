@@ -4,13 +4,18 @@
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 #include <string>
-#include "Pipeline.h"
+#include <memory>
 
 namespace Lavendel {
 
     namespace RendererAPI {
-	    class LAVENDEL_API Window
-	    {
+
+        // Forward declarations to break circular dependency
+        class GPUDevice;
+        class Pipeline;
+
+        class LAVENDEL_API Window
+        {
 
         public:
             Window(int width, int height, const std::string& title, bool bResizable);
@@ -25,17 +30,17 @@ namespace Lavendel {
         private:
             void Init(int width, int height, const std::string& title, bool bResizable);
             void Shutdown();
-        
-            
 
             GLFWwindow* m_Window;
-            Pipeline m_Pipeline{"shaders/shader.vert.spv", "shaders/shader.frag.spv"};
-
             int m_Width, m_Height;
-		    bool m_Resizable;
+            bool m_Resizable;
             std::string m_Title;
 
-	    };
+            // Use smart pointers for proper initialization order
+            std::unique_ptr<GPUDevice> m_Device;
+            std::unique_ptr<Pipeline> m_Pipeline;
 
-	}
+        };
+
+    }
 }

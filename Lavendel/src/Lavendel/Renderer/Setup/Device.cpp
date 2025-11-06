@@ -1,6 +1,8 @@
 #include "Device.h"
 
 // std headers
+#include "../../Log.h"
+#include <GLFW/glfw3.h>
 #include <cstring>
 #include <iostream>
 #include <set>

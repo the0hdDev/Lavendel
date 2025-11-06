@@ -1,11 +1,15 @@
 #pragma once
 
-#include "Window.h"
+#include "../../Core.h"
+#include <vulkan/vulkan.h>
 #include <string>
 #include <vector>
 
 namespace Lavendel {
     namespace RendererAPI {
+
+        // Forward declaration to break circular dependency
+        class Window;
 
         struct SwapChainSupportDetails
         {
