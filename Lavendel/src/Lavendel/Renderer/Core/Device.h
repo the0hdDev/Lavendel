@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace Lavendel {
-    namespace RendererAPI {
+    namespace RenderAPI {
 
         // Forward declaration to break circular dependency
         class Window;
@@ -100,7 +100,7 @@ namespace Lavendel {
             VkInstance m_Instance;
             VkDebugUtilsMessengerEXT m_DebugMessenger;
             VkPhysicalDevice m_PhysicalDevice = VK_NULL_HANDLE;
-            Lavendel::RendererAPI::Window& m_Window;
+            Lavendel::RenderAPI::Window& m_Window;
             VkCommandPool m_CommandPool;
 
             VkDevice m_Device;

@@ -1,8 +1,8 @@
 #pragma once
 #include "Core.h"
 #include "Renderer/Window.h"
-#include "Renderer/Setup/Device.h"
-#include "Renderer/Setup/Pipeline.h"
+#include "Renderer/Core/Device.h"
+#include "Renderer/Pipeline/Pipeline.h"
 #include <string>
 
 
@@ -22,9 +22,9 @@ namespace Lavendel
 
 	private:
 
-		Lavendel::RendererAPI::Window m_Window{ 1280, 720, "Lavendel Window", false };
-		Lavendel::RendererAPI::GPUDevice m_Device{ m_Window };
-		Lavendel::RendererAPI::Pipeline m_Pipeline{m_Device, "shaders/shader.vert.spv", "shaders/shader.frag.spv", Lavendel::RendererAPI::Pipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)
+		Lavendel::RenderAPI::Window m_Window{1280, 720, "Lavendel Window", false };
+		Lavendel::RenderAPI::GPUDevice m_Device{m_Window };
+		Lavendel::RenderAPI::Pipeline m_Pipeline{m_Device, "shaders/shader.vert.spv", "shaders/shader.frag.spv", Lavendel::RenderAPI::Pipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)
 		};
 	};
 

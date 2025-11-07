@@ -1,10 +1,10 @@
 #include "Window.h"
-#include "Setup/Device.h"
-#include "Setup/Pipeline.h"
+#include "Core/Device.h"
+#include "Pipeline/Pipeline.h"
 #include "../Log.h"
 
 namespace Lavendel {
-	namespace RendererAPI {
+	namespace RenderAPI {
 
 		static bool s_GLFWInitialized = false;
 

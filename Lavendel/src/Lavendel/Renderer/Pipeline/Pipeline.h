@@ -7,7 +7,7 @@
 #include "../../Log.h"
 
 namespace Lavendel {
-	namespace RendererAPI {
+	namespace RenderAPI {
 
 		// Forward declaration to break circular dependency
 		class GPUDevice;
@@ -19,7 +19,7 @@ namespace Lavendel {
 			VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
 			VkPipelineViewportStateCreateInfo viewportInfo;
 			VkPipelineRasterizationStateCreateInfo rasterizationInfo;
-			VkPipelineMultisampleStateCreateFlags multisampleInfo;
+			VkPipelineMultisampleStateCreateInfo multisampleInfo;
 			VkPipelineColorBlendAttachmentState colorBlendAttachment;
 			VkPipelineColorBlendStateCreateInfo colorBlendInfo;
 			VkPipelineDepthStencilStateCreateInfo depthStencilInfo;

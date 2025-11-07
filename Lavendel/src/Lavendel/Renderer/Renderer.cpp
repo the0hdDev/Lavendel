@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
 namespace Lavendel {
-	namespace RendererAPI {
+	namespace RenderAPI {
 
 	}  // namespace Renderer
 }

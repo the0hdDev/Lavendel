@@ -11,8 +11,8 @@ add_library(Lavendel SHARED
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/Event.h"
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/KeyEvent.h"
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/MouseEvent.h"
- "src/Lavendel/Renderer/Window.cpp" "src/Lavendel/Renderer/Window.h" "src/Lavendel/Renderer/Setup/Pipeline.h" 
-"src/Lavendel/Renderer/Setup/Pipeline.cpp" "src/Lavendel/Renderer/Setup/Device.cpp" "src/Lavendel/Renderer/Setup/Device.h")
+ "src/Lavendel/Renderer/Window.cpp" "src/Lavendel/Renderer/Window.h" "src/Lavendel/Renderer/Pipeline/Pipeline.h" 
+"src/Lavendel/Renderer/Pipeline/Pipeline.cpp" "src/Lavendel/Renderer/Core/Device.cpp" "src/Lavendel/Renderer/Core/Device.h")
 
 target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
 add_definitions(-DLV_BUILD_DLL)

@@ -4,7 +4,7 @@
 
 namespace Lavendel
 {
-	namespace RendererAPI
+	namespace RenderAPI
 	{
 		class Renderer
 		{

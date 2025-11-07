@@ -8,7 +8,7 @@
 
 namespace Lavendel {
 
-    namespace RendererAPI {
+    namespace RenderAPI {
 
         // Forward declarations to break circular dependency
         class GPUDevice;
