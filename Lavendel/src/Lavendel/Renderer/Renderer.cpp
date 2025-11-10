@@ -5,6 +5,9 @@ namespace Lavendel {
 
 		Renderer::Renderer(Window& window) : m_Window(window)
 		{
+			m_Device = std::make_unique<GPUDevice>(m_Window);
+			m_SwapChain = std::make_unique<SwapChain>(*m_Device, m_Window.getExtent());
+
 			createPipelineLayout();
 			createPipeline();
 			createCommandBuffers();
@@ -12,7 +15,7 @@ namespace Lavendel {
 
 		Renderer::~Renderer()
 		{
-			vkDestroyPipelineLayout(m_Device.device(), m_PipelineLayout, nullptr);
+			vkDestroyPipelineLayout(m_Device->device(), m_PipelineLayout, nullptr);
 		}
 
 		void Renderer::createPipelineLayout()
@@ -23,7 +26,7 @@ namespace Lavendel {
 			pipelineLayoutInfo.pSetLayouts = nullptr;
 			pipelineLayoutInfo.pushConstantRangeCount = 0;
 			pipelineLayoutInfo.pPushConstantRanges = nullptr;
-			if (vkCreatePipelineLayout(m_Device.device(), &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS)
+			if (vkCreatePipelineLayout(m_Device->device(), &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS)
 			{
 				LV_CORE_ERROR("Failed to create pipeline layout!");
 				throw std::runtime_error("Failed to create pipeline layout!");
@@ -32,11 +35,11 @@ namespace Lavendel {
 
 		void Renderer::createPipeline()
 		{
-			auto pipelineConfig = Lavendel::RenderAPI::Pipeline::defaultPipelineConfigInfo(m_SwapChain.width(), m_SwapChain.height());
-			pipelineConfig.renderPass = m_SwapChain.getRenderPass();
+			auto pipelineConfig = Lavendel::RenderAPI::Pipeline::defaultPipelineConfigInfo(m_SwapChain->width(), m_SwapChain->height());
+			pipelineConfig.renderPass = m_SwapChain->getRenderPass();
 			pipelineConfig.pipelineLayout = m_PipelineLayout;
 			m_Pipeline = std::make_unique<Lavendel::RenderAPI::Pipeline>(
-				m_Device,
+				*m_Device,
 				"shaders/shader.vert.spv",
 				"shaders/shader.frag.spv",
 				pipelineConfig);
@@ -44,15 +47,15 @@ namespace Lavendel {
 
 		void Renderer::createCommandBuffers()
 		{
-			m_CommandBuffers.resize(m_SwapChain.imageCount());
+			m_CommandBuffers.resize(m_SwapChain->imageCount());
 
 			VkCommandBufferAllocateInfo allocInfo{};
 			allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
 			allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-			allocInfo.commandPool = m_Device.getCommandPool();
+			allocInfo.commandPool = m_Device->getCommandPool();
 			allocInfo.commandBufferCount = static_cast<uint32_t>(m_CommandBuffers.size());
 
-			if (vkAllocateCommandBuffers(m_Device.device(), &allocInfo, m_CommandBuffers.data()) != VK_SUCCESS)
+			if (vkAllocateCommandBuffers(m_Device->device(), &allocInfo, m_CommandBuffers.data()) != VK_SUCCESS)
 			{
 				LV_CORE_ERROR("Failed to allocate command buffers!");
 				throw std::runtime_error("Failed to allocate command buffers!");
@@ -70,11 +73,11 @@ namespace Lavendel {
 
 				VkRenderPassBeginInfo renderPassInfo{};
 				renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-				renderPassInfo.renderPass = m_SwapChain.getRenderPass();
-				renderPassInfo.framebuffer = m_SwapChain.getFrameBuffer(i);
+				renderPassInfo.renderPass = m_SwapChain->getRenderPass();
+				renderPassInfo.framebuffer = m_SwapChain->getFrameBuffer(i);
 
 				renderPassInfo.renderArea.offset = { 0, 0 };
-				renderPassInfo.renderArea.extent = m_SwapChain.getSwapChainExtent();
+				renderPassInfo.renderArea.extent = m_SwapChain->getSwapChainExtent();
 
 				std::array<VkClearValue, 2> clearValues{};
 				clearValues[0].color = { {0.01f, 0.01f, 0.01f, 1.0f} };
@@ -99,14 +102,14 @@ namespace Lavendel {
 		void Renderer::drawFrame()
 		{
 			uint32_t imageIndex;
-			auto result = m_SwapChain.acquireNextImage(&imageIndex);
+			auto result = m_SwapChain->acquireNextImage(&imageIndex);
 			if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
 			{
 				LV_CORE_ERROR("Failed to acquire swap chain image!");
 				throw std::runtime_error("Failed to acquire swap chain image!");
 			}
 
-			result = m_SwapChain.submitCommandBuffers(&m_CommandBuffers[imageIndex], &imageIndex);
+			result = m_SwapChain->submitCommandBuffers(&m_CommandBuffers[imageIndex], &imageIndex);
 			if (result != VK_SUCCESS)
 			{
 				LV_CORE_ERROR("Failed to present swap chain image!");

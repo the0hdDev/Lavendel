@@ -37,13 +37,11 @@ namespace Lavendel
 			void createCommandBuffers();
 
 			Window& m_Window;
-			GPUDevice m_Device{ m_Window };
-			SwapChain m_SwapChain{ m_Device, m_Window.getExtent() };
-			std::unique_ptr<RenderAPI::Pipeline> m_Pipeline;
-			VkPipelineLayout m_PipelineLayout;
+			std::shared_ptr<GPUDevice> m_Device;
+			std::shared_ptr<SwapChain> m_SwapChain;
+			std::shared_ptr<RenderAPI::Pipeline> m_Pipeline;
 			std::vector<VkCommandBuffer> m_CommandBuffers;
+			std::shared_ptr<PipelineLayout>
 		};
 	}
 }
-
-

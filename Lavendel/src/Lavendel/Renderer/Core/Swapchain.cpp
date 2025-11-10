@@ -107,8 +107,8 @@ namespace Lavendel {
             if (vkQueueSubmit(device.graphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) !=
                 VK_SUCCESS)
             {
+                LV_CORE_ERROR("Failed to submit draw command buffer!");
                 throw std::runtime_error("failed to submit draw command buffer!");
-				LV_CORE_ERROR("Failed to submit draw command buffer!");
             }
 
             VkPresentInfoKHR presentInfo = {};
@@ -182,8 +182,8 @@ namespace Lavendel {
 
             if (vkCreateSwapchainKHR(device.device(), &createInfo, nullptr, &swapChain) != VK_SUCCESS)
             {
+                LV_CORE_ERROR("Failed to create swap chain!");
                 throw std::runtime_error("failed to create swap chain!");
-				LV_CORE_ERROR("Failed to create swap chain!");
             }
 
             // we only specified a minimum number of images in the swap chain, so the implementation is
@@ -217,8 +217,8 @@ namespace Lavendel {
                 if (vkCreateImageView(device.device(), &viewInfo, nullptr, &swapChainImageViews[i]) !=
                     VK_SUCCESS)
                 {
+                    LV_CORE_ERROR("Failed to create texture image view!");
                     throw std::runtime_error("failed to create texture image view!");
-					LV_CORE_ERROR("Failed to create texture image view!");
                 }
             }
         }
@@ -282,8 +282,8 @@ namespace Lavendel {
 
             if (vkCreateRenderPass(device.device(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
             {
+                LV_CORE_ERROR("Failed to create render pass!");
                 throw std::runtime_error("failed to create render pass!");
-				LV_CORE_ERROR("Failed to create render pass!");
             }
         }
 
@@ -310,8 +310,8 @@ namespace Lavendel {
                     nullptr,
                     &swapChainFramebuffers[i]) != VK_SUCCESS)
                 {
+                    LV_CORE_ERROR("Failed to create framebuffer!");
                     throw std::runtime_error("failed to create framebuffer!");
-					LV_CORE_ERROR("Failed to create framebuffer!");
                 }
             }
         }
@@ -362,8 +362,8 @@ namespace Lavendel {
 
                 if (vkCreateImageView(device.device(), &viewInfo, nullptr, &depthImageViews[i]) != VK_SUCCESS)
                 {
+                    LV_CORE_ERROR("Failed to create texture image view!");
                     throw std::runtime_error("failed to create texture image view!");
-					LV_CORE_ERROR("Failed to create texture image view!");
                 }
             }
         }
@@ -390,8 +390,8 @@ namespace Lavendel {
                     VK_SUCCESS ||
                     vkCreateFence(device.device(), &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS)
                 {
+                    LV_CORE_ERROR("Failed to create synchronization objects for a frame!");
                     throw std::runtime_error("failed to create synchronization objects for a frame!");
-					LV_CORE_ERROR("Failed to create synchronization objects for a frame!");
                 }
             }
         }

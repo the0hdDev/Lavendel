@@ -20,7 +20,14 @@ namespace Lavendel {
             const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
             void* pUserData)
         {
-            LV_CORE_ERROR("validation layer: {}", pCallbackData->pMessage);
+            // Safety check: logger might not be initialized yet during early callbacks
+            auto coreLogger = ::Lavendel::Log::GetCoreLogger();
+            if (coreLogger && coreLogger.get() != nullptr) {
+                LV_CORE_ERROR("validation layer: {}", pCallbackData->pMessage);
+            } else {
+                // Fallback: use stderr if logger not available
+                std::cerr << "[VULKAN VALIDATION]: " << pCallbackData->pMessage << std::endl;
+            }
 
             return VK_FALSE;
         }

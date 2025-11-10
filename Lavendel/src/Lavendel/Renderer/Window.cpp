@@ -1,6 +1,4 @@
 #include "Window.h"
-#include "Core/Device.h"
-#include "Pipeline/Pipeline.h"
 #include "../Log.h"
 
 namespace Lavendel {
@@ -51,27 +49,15 @@ namespace Lavendel {
 				LV_CORE_ERROR("Failed to create GLFW window!");
 				return;
 			}
-
-			// Initialize GPUDevice and Pipeline after m_Window is created
-			m_Device = std::make_unique<GPUDevice>(*this);
-			m_Pipeline = std::make_unique<Pipeline>(*m_Device, 
-													"shaders/shader.vert.spv", 
-													"shaders/shader.frag.spv", 
-													Pipeline::defaultPipelineConfigInfo(m_Width, m_Height));
 		}
 
 		void Window::Shutdown()
 		{
-			// Destroy in reverse order
-			m_Pipeline.reset();
-			m_Device.reset();
-			
 			if (m_Window)
 			{
 				glfwDestroyWindow(m_Window);
+				m_Window = nullptr;
 			}
-			
-			glfwTerminate();
 		}
 
 		void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR* surface)
