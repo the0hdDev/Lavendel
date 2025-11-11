@@ -8,9 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-
+if(WIN32)
+    add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+    add_compile_options(/UTF-8)
+endif()
 # === CONFIGURATIONS ===
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release;Dist" CACHE STRING "" FORCE)
 
@@ -34,8 +36,6 @@ elseif(UNIX)
     add_compile_definitions(LV_PLATFORM_LINUX)
 endif()
 
-# === CONFIGURATION MACROS ===
-# Diese Defines h�ngen vom Build-Typ ab (Debug / Release / Dist)
 add_compile_definitions(
     $<$<CONFIG:Debug>:LM_DEBUG>
     $<$<CONFIG:Release>:LM_RELEASE>
@@ -43,7 +43,7 @@ add_compile_definitions(
 )
 
 # === COMPILER WARNINGS & FLAGS ===
-add_compile_options(/UTF-8)
+
 
 # === SUBDIRECTORIES ===
 add_subdirectory(Lavendel)

@@ -4,6 +4,7 @@
 
 extern Lavendel::Application* Lavendel::CreateApplication();
 
+
 int main(int argc, char** argv)
 {
 	
@@ -18,7 +19,7 @@ int main(int argc, char** argv)
 	delete app;
 }
 
-
+/*
 
 #ifdef LV_PLATFORM_LINUX
 
@@ -45,4 +46,4 @@ int main(int argc, char** argv)
 	app->Run();
 	delete app;
 }
-#endif 
+#endif */

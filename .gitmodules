@@ -4,9 +4,3 @@
 [submodule "Lavendel/vendor/glfw"]
 	path = Lavendel/vendor/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "Lavendel/vendor/glfm"]
-	path = Lavendel/vendor/glfm
-	url = https://github.com/g-truc/glm.git
-[submodule "Lavendel/vendor/volk"]
-	path = Lavendel/vendor/volk
-	url = https://github.com/zeux/volk.git

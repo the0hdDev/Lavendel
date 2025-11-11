@@ -15,9 +15,10 @@ add_library(Lavendel SHARED
 "src/Lavendel/Renderer/Pipeline/Pipeline.cpp" "src/Lavendel/Renderer/Core/Device.cpp" "src/Lavendel/Renderer/Core/Device.h"
 "src/Lavendel/Renderer/Core/Swapchain.cpp" "src/Lavendel/Renderer/Core/Swapchain.h" "src/Lavendel/Renderer/Renderer.h" "src/Lavendel/Renderer/Renderer.cpp")
 
-target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
-add_definitions(-DLV_BUILD_DLL)
-
+if(WIN32)
+    target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
+    add_definitions(-DLV_BUILD_DLL)
+endif()
 
 add_subdirectory(vendor/spdlog)
 add_subdirectory(vendor/glfw)
@@ -59,4 +60,6 @@ message(STATUS "LV_BUILD_DLL is defined: ${LV_BUILD_DLL}")
 get_target_property(COMPILE_DEFS Lavendel COMPILE_DEFINITIONS)
 message(STATUS "Lavendel compile definitions: ${COMPILE_DEFS}")
 
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+if(WIN32)
+    add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+endif()
