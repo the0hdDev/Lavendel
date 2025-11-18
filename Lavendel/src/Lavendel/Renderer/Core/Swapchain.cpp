@@ -65,7 +65,7 @@ namespace Lavendel {
             }
         }
 
-        VkResult SwapChain::acquireNextImage(uint32_t* imageIndex)
+        VkResult SwapChain::acquireNextImage(uint32_t &imageIndex)
         {
             vkWaitForFences(
                 m_Device.device(),
@@ -80,7 +80,7 @@ namespace Lavendel {
                 std::numeric_limits<uint64_t>::max(),
                 imageAvailableSemaphores[currentFrame],
                 VK_NULL_HANDLE,
-                imageIndex);
+                &imageIndex);
 
             return result;
         }
@@ -409,14 +409,14 @@ namespace Lavendel {
         VkPresentModeKHR SwapChain::chooseSwapPresentMode(
             const std::vector<VkPresentModeKHR>& availablePresentModes)
         {
-            for (const auto& availablePresentMode : availablePresentModes)
+            /*for (const auto& availablePresentMode : availablePresentModes)
             {
                 if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
                 {
                     LV_CORE_INFO("Present mode: Mailbox");
                     return availablePresentMode;
                 }
-            }
+            }*/
 
             LV_CORE_INFO("Present mode: V-Sync");
             return VK_PRESENT_MODE_FIFO_KHR;

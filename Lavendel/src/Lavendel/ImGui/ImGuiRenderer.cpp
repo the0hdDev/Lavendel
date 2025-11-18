@@ -110,11 +110,11 @@ namespace Lavendel {
 			int total_idx = draw_data->TotalIdxCount;
 			if (total_vtx == 0)
 			{
-				LV_CORE_INFO("ImGui draw data empty: vtx=0 idx=0");
+				//LV_CORE_INFO("ImGui draw data empty: vtx=0 idx=0");
 			}
 			else
 			{
-				LV_CORE_INFO("ImGui draw data: lists=%d verts=%d idx=%d", draw_data->CmdListsCount, total_vtx, total_idx);
+				//LV_CORE_INFO("ImGui draw data: lists=%d verts=%d idx=%d", draw_data->CmdListsCount, total_vtx, total_idx);
 			}
 			ImGui_ImplVulkan_RenderDrawData(draw_data, commandBuffer);
 		}

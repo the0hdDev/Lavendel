@@ -192,7 +192,7 @@ namespace Lavendel {
 		void Renderer::drawFrame()
 		{
 			uint32_t imageIndex;
-			auto result = m_SwapChain->acquireNextImage(&imageIndex);
+			auto result = m_SwapChain->acquireNextImage(imageIndex);
 
 			if (result == VK_ERROR_OUT_OF_DATE_KHR)
 			{

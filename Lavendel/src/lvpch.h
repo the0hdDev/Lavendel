@@ -16,6 +16,7 @@
 #include <memory>
 #include <sstream>
 #include <iostream>
+#include <fstream>
 #include <stdexcept>
 #include <cstdlib>
 #include <cstring>
@@ -24,7 +25,9 @@
 #include <stdexcept>
 #include <cassert>
 #include <unordered_set>
-#include <fstream>
+#include <thread>
+#include <chrono>
+#include <algorithm>
 
 // self
 #include "Lavendel/Log.h"
