@@ -144,4 +144,4 @@ private:
     #define LV_CONCAT_INTERNAL(x, y) x##y
     #define LV_CONCAT(x, y) LV_CONCAT_INTERNAL(x, y)
     #define LV_PROFILE_SCOPE(name) ::InstrumentationTimer LV_CONCAT(timer, __LINE__)(name)
-    #define LV_PROFILE_FUNCTION() LV_PROFILE_SCOPE(__FUNCSIG__)
+    #define LV_PROFILE_FUNCTION() LV_PROFILE_SCOPE(__PRETTY_FUNCTION__)
