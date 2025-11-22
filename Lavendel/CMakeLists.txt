@@ -11,9 +11,9 @@ add_library(Lavendel SHARED
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/Event.h"
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/KeyEvent.h"
         "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/MouseEvent.h"
- "src/Lavendel/Renderer/Window.cpp" "src/Lavendel/Renderer/Window.h" "src/Lavendel/Renderer/Pipeline/Pipeline.h" 
-"src/Lavendel/Renderer/Pipeline/Pipeline.cpp" "src/Lavendel/Renderer/Core/Device.cpp" "src/Lavendel/Renderer/Core/Device.h"
-"src/Lavendel/Renderer/Core/Swapchain.cpp" "src/Lavendel/Renderer/Core/Swapchain.h" "src/Lavendel/Renderer/Renderer.h" "src/Lavendel/Renderer/Renderer.cpp"
+        "src/Lavendel/Renderer/Window.cpp" "src/Lavendel/Renderer/Window.h" "src/Lavendel/Renderer/Pipeline/Pipeline.h" 
+        "src/Lavendel/Renderer/Pipeline/Pipeline.cpp" "src/Lavendel/Renderer/Core/Device.cpp" "src/Lavendel/Renderer/Core/Device.h"
+        "src/Lavendel/Renderer/Core/Swapchain.cpp" "src/Lavendel/Renderer/Core/Swapchain.h" "src/Lavendel/Renderer/Renderer.h" "src/Lavendel/Renderer/Renderer.cpp"
         src/Lavendel/Renderer/Model/Model.cpp
         src/Lavendel/Renderer/Model/Model.h
         src/lvpch.cpp
@@ -31,7 +31,37 @@ add_library(Lavendel SHARED
         "src/Lavendel/Utils/Profiling/Instrumentor.h"
 )
 
-if(WIN32)
+if(WIN32 OR UNIX)
+    set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
+    set(SHADER_OUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+    file(MAKE_DIRECTORY ${SHADER_OUT_DIR})
+
+    file(GLOB SHADER_FILES "${SHADER_SRC_DIR}/*.vert" "${SHADER_SRC_DIR}/*.frag")
+
+    add_custom_target(
+        CompileShaders ALL
+    )
+
+    foreach(SHADER_FILE ${SHADER_FILES})
+        get_filename_component(SHADER_NAME ${SHADER_FILE} NAME)
+        if(WIN32)
+            add_custom_command(
+                TARGET CompileShaders
+                COMMAND ${CMAKE_COMMAND} -E echo "Compiling ${SHADER_NAME}..."
+                COMMAND C:/VulkanSDK/1.4.328.1/Bin/glslc.exe ${SHADER_FILE} -o ${SHADER_OUT_DIR}/${SHADER_NAME}.spv
+                VERBATIM
+            )
+        else()
+            add_custom_command(
+                TARGET CompileShaders
+                COMMAND ${CMAKE_COMMAND} -E echo "Compiling ${SHADER_NAME}..."
+                COMMAND glslc ${SHADER_FILE} -o ${SHADER_OUT_DIR}/${SHADER_NAME}.spv
+                VERBATIM
+            )
+        endif()
+    endforeach()
+
+    add_dependencies(Lavendel CompileShaders)
     target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
     add_definitions(-DLV_BUILD_DLL)
 endif()
@@ -41,13 +71,11 @@ add_subdirectory(vendor/volk)
 add_subdirectory(vendor/glm)
 add_subdirectory(vendor/sdl3)
 
-
 find_package(Vulkan REQUIRED)
 if (Vulkan_FOUND)
     message(STATUS "Vulkan include dir: ${Vulkan_INCLUDE_DIRS}")
     target_include_directories(Lavendel PUBLIC ${Vulkan_INCLUDE_DIRS})
-    target_link_libraries(Lavendel PRIVATE ${Vulkan_LIBRARIES}
-                                   SDL3::SDL3)
+    target_link_libraries(Lavendel PRIVATE ${Vulkan_LIBRARIES} SDL3::SDL3)
 endif()
 
 target_include_directories(Lavendel PUBLIC
@@ -55,16 +83,13 @@ target_include_directories(Lavendel PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl3/include
         ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
-
 )
-
 
 target_compile_definitions(Lavendel PRIVATE
         $<$<CONFIG:Debug>:LV_DEBUG>
         $<$<CONFIG:Release>:LV_RELEASE>
         $<$<CONFIG:Dist>:LV_DIST>
 )
-
 
 target_include_directories(Lavendel
         PUBLIC

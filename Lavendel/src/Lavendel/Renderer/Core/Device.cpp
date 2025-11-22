@@ -79,6 +79,8 @@ namespace Lavendel {
         GPUDevice::~GPUDevice()
         {
             LV_PROFILE_FUNCTION();
+
+            vkDeviceWaitIdle(m_Device);
             vkDestroyCommandPool(m_Device, m_CommandPool, nullptr);
             vkDestroyDevice(m_Device, nullptr);
 
@@ -346,6 +348,8 @@ namespace Lavendel {
 #ifdef LV_PLATFORM_OSX
             extensions.push_back("VK_KHR_portability_enumeration");
 #endif
+
+            extensions.push_back("VK_KHR_get_physical_device_properties2");
 
             if (enableValidationLayers)
             {

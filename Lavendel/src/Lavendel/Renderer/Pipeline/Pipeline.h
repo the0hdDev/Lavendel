@@ -31,7 +31,7 @@ namespace Lavendel {
 			bool isExplosive = false;
 			bool isLaser = false;
 		};
-		class LAVENDEL_API LAVENDEL_API Pipeline
+		class LAVENDEL_API Pipeline
 		{
 		public:
 			Pipeline(GPUDevice& device,

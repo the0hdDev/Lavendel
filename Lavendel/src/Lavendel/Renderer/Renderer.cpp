@@ -1,3 +1,6 @@
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+
 #include "lvpch.h"
 #include "Renderer.h"
 #include "Pipeline/Pipeline.h"
@@ -16,6 +19,12 @@ std::shared_ptr<Lavendel::RenderAPI::Pipeline> Lavendel::RenderAPI::Renderer::m_
 namespace Lavendel {
 	namespace RenderAPI {
 
+		struct SimplePushConstantData
+		{
+			glm::vec2 offset;
+			alignas(16) glm::vec4 color;
+		};
+
 		Renderer::Renderer(Window& window) : m_Window(window)
 		{
 			LV_PROFILE_FUNCTION();
@@ -31,18 +40,25 @@ namespace Lavendel {
 		Renderer::~Renderer()
 		{
 			LV_PROFILE_FUNCTION();
+			vkDeviceWaitIdle(m_Device->device());
 			vkDestroyPipelineLayout(m_Device->device(), m_PipelineLayout, nullptr);
 		}
 
 		void Renderer::createPipelineLayout()
 		{
 			LV_PROFILE_FUNCTION();
+		
+			VkPushConstantRange pushConstantRange{};
+			pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+			pushConstantRange.offset = 0;
+			pushConstantRange.size = sizeof(SimplePushConstantData);
+
 			VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 			pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 			pipelineLayoutInfo.setLayoutCount = 0;
 			pipelineLayoutInfo.pSetLayouts = nullptr;
-			pipelineLayoutInfo.pushConstantRangeCount = 0;
-			pipelineLayoutInfo.pPushConstantRanges = nullptr;
+			pipelineLayoutInfo.pushConstantRangeCount = 1;
+			pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 			if (vkCreatePipelineLayout(m_Device->device(), &pipelineLayoutInfo, nullptr, &m_PipelineLayout) != VK_SUCCESS)
 			{
 				LV_CORE_ERROR("Failed to create pipeline layout!");
@@ -137,6 +153,10 @@ namespace Lavendel {
 		void Renderer::recordCommandBuffer(int imageIndex)
 		{
 			LV_PROFILE_FUNCTION();
+		
+			static int frame = 0; 
+			frame = (frame + 1) % 1000;
+
 			VkCommandBufferBeginInfo beginInfo{};
 			beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 			if (vkBeginCommandBuffer(m_CommandBuffers[imageIndex], &beginInfo) != VK_SUCCESS)
@@ -172,10 +192,27 @@ namespace Lavendel {
 			vkCmdSetViewport(m_CommandBuffers[imageIndex], 0, 1, &viewport);
 			vkCmdSetScissor(m_CommandBuffers[imageIndex], 0, 1, &scissor);
 
+
 			// Render scene - bind pipeline and draw the model
 			m_Pipeline->bind(m_CommandBuffers[imageIndex]);
 			m_Model->bind(m_CommandBuffers[imageIndex]);
-			m_Model->draw(m_CommandBuffers[imageIndex]);
+
+			for (int j = 0; j < 4; j++)
+			{
+				SimplePushConstantData push{};
+				push.offset = { -0.5f + frame * 0.002f, -0.4f * j * 0.25 };
+				push.color = { 0.0f, 0.0f, 0.2f + 0.2f * j, 1 };
+
+				vkCmdPushConstants(
+					m_CommandBuffers[imageIndex],
+					m_PipelineLayout,
+					VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+					0,
+					sizeof(SimplePushConstantData),
+					&push);
+
+				m_Model->draw(m_CommandBuffers[imageIndex]);
+			}
 
 			// Render layers in stack order. This respects the layer stack and ensures
 			// that ImGui (typically added as the last layer via PushLayer) renders on top.

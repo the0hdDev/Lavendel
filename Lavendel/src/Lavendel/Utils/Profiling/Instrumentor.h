@@ -120,7 +120,6 @@ public:
     void Stop()
     {
         auto endTimepoint = std::chrono::high_resolution_clock::now();
-
         long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
         long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
@@ -135,15 +134,10 @@ private:
     bool m_Stopped;
 };
 
-#ifdef __FUNCSIG__
-#define __FUNCSIG__ __PRETTY_FUNCTION__
-#endif
-
-
-
 #define LV_PROFILE_BEGIN_SESSION(name, filepath) ::Instrumentor::Get().BeginSession(name, filepath)
 #define LV_PROFILE_END_SESSION() ::Instrumentor::Get().EndSession()
 #define LV_CONCAT_INTERNAL(x, y) x##y
 #define LV_CONCAT(x, y) LV_CONCAT_INTERNAL(x, y)
 #define LV_PROFILE_SCOPE(name) ::InstrumentationTimer LV_CONCAT(timer, __LINE__)(name)
 #define LV_PROFILE_FUNCTION() LV_PROFILE_SCOPE(__PRETTY_FUNCTION__)
+
