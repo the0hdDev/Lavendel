@@ -40,7 +40,7 @@ namespace Lavendel {
                 LV_CORE_ERROR("device is null");
             }
 
-            vkDeviceWaitIdle(m_Device.device());  // <-- hier crasht es
+            vkDeviceWaitIdle(m_Device.device());  // <-- crashes here right now
 
             for (auto imageView : swapChainImageViews)
             {

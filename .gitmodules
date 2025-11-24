@@ -10,3 +10,7 @@
 [submodule "Lavendel/vendor/volk"]
 	path = Lavendel/vendor/volk
 	url = https://www.github.com/zeux/volk
+[submodule "Lavendel/vendor/ImGui"]
+	path = Lavendel/vendor/ImGui
+	url = https://github.com/ocornut/imgui
+	branch = docking

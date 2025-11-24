@@ -111,13 +111,13 @@ if(WIN32)
 endif()
 
 set(IMGUI_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_draw.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_widgets.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_tables.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_demo.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_impl_sdl3.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/SDL3/imgui_impl_vulkan.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/imgui.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/imgui_draw.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/imgui_widgets.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/imgui_tables.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/imgui_demo.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/backends/imgui_impl_sdl3.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/vendor/ImGui/backends/imgui_impl_vulkan.cpp
 )
 
 target_sources(Lavendel PRIVATE ${IMGUI_SRC})

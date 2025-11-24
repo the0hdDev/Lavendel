@@ -4,8 +4,8 @@
 #include "ImGuiRenderer.h"
 // ImGui core and backend for SDL3 are provided under vendor/ImGui/SDL3.
 // Include the SDL3-specific headers (CMake adds vendor/ImGui to include paths).
-#include "SDL3/imgui.h"
-#include "SDL3/imgui_impl_sdl3.h"
+#include "imgui.h"
+#include "imgui_impl_sdl3.h"
 #include "Lavendel/Log.h"
 #include "Lavendel/Renderer/Renderer.h"
 #include "Lavendel/Log.h"
