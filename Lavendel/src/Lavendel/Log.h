@@ -5,6 +5,7 @@
 #include "Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#include <cassert>
 
 namespace Lavendel {
 
@@ -13,8 +14,18 @@ namespace Lavendel {
                     public:
                     static void Init();
 
-                    inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
-                    inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
+                    inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() {
+                        if (s_CoreLogger == null)
+                                assert("CoreLogger is null")
+                                return; 
+                        return s_CoreLogger; 
+                    }
+                    inline static std::shared_ptr<spdlog::logger>& GetClientLogger() {
+                        if (s_ClientLogger == null)
+                                assert("ClientLogger is null")
+                                return;
+                        return s_ClientLogger; 
+                }
                     private:
                     static std::shared_ptr<spdlog::logger> s_CoreLogger;
                     static std::shared_ptr<spdlog::logger> s_ClientLogger;
@@ -28,6 +39,7 @@ namespace Lavendel {
 #define LV_CORE_WARN(...)     if(::Lavendel::Log::GetCoreLogger()) ::Lavendel::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define LV_CORE_ERROR(...)    if(::Lavendel::Log::GetCoreLogger()) ::Lavendel::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define LV_CORE_FATAL(...)    if(::Lavendel::Log::GetCoreLogger()) ::Lavendel::Log::GetCoreLogger()->critical(__VA_ARGS__)
+#define LV_CORE_ASSERT(...)   if(::Lavendel::Log::GetCoreLogger()) ::Lavendel::Log::GetCoreLogger()->assert(__VA_ARGS__)
 
 // Client log macros with null checks
 #define LV_TRACE(...)	      if(::Lavendel::Log::GetClientLogger()) ::Lavendel::Log::GetClientLogger()->trace(__VA_ARGS__)
@@ -35,3 +47,4 @@ namespace Lavendel {
 #define LV_WARN(...)	      if(::Lavendel::Log::GetClientLogger()) ::Lavendel::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define LV_ERROR(...)	      if(::Lavendel::Log::GetClientLogger()) ::Lavendel::Log::GetClientLogger()->error(__VA_ARGS__)
 #define LV_FATAL(...)	      if(::Lavendel::Log::GetClientLogger()) ::Lavendel::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define LV_ASSERT(...).       if(::Lavendel::Log::GetClientLogger()) ::Lavendel::Log::GetClientLogger()->assert(__VA_ARGS__)

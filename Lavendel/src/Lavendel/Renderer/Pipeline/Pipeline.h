@@ -23,14 +23,6 @@ namespace Lavendel {
 			uint32_t subpass = 0;
 		};
 
-		struct ProjectileInfo
-		{
-			float speed = 10.0f;
-			float damage = 10.0f;
-			float range = 100.0f;
-			bool isExplosive = false;
-			bool isLaser = false;
-		};
 		class LAVENDEL_API Pipeline
 		{
 		public:
