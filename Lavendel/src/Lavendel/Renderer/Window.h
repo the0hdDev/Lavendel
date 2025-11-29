@@ -1,6 +1,6 @@
 #pragma once
 #include "lvpch.h"
-#include "../Core.h"
+#include "Lavendel/Core/Core.h"
 #include <SDL3/SDL.h>
 
 

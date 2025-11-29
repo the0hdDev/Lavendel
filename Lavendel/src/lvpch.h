@@ -30,6 +30,6 @@
 #include <algorithm>
 
 // self
-#include "Lavendel/Log.h"
-#include "Lavendel/Core.h"
+#include "Lavendel/Core/Log.h"
+#include "Lavendel/Core/Core.h"
 #include "Lavendel/Utils/Profiling/Instrumentor.h"

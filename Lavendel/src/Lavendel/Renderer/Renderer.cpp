@@ -2,13 +2,13 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
 #include "lvpch.h"
-#include "Core.h"
+#include "Lavendel/Core/Core.h"
 #include "Renderer.h"
 #include "Pipeline/Pipeline.h"
 #include "Lavendel/ImGui/ImGuiLayer.h"
 #include "Lavendel/Layers/LayerStack.h"
 #include "Lavendel/Layers/Layer.h"
-#include "Lavendel/Application.h"
+#include "Lavendel/Core/Application.h"
 
 
 namespace Lavendel {

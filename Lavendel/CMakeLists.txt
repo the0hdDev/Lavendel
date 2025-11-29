@@ -1,19 +1,26 @@
 add_library(Lavendel SHARED
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Core.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Application.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Application.cpp"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Entrypoint.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Renderer/Renderer.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Renderer/Renderer.cpp"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Log.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Log.cpp"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/ApplicationEvent.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/Event.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/KeyEvent.h"
-        "${CMAKE_SOURCE_DIR}/Lavendel/src/Lavendel/Events/MouseEvent.h"
-        "src/Lavendel/Renderer/Window.cpp" "src/Lavendel/Renderer/Window.h" "src/Lavendel/Renderer/Pipeline/Pipeline.h"
-        "src/Lavendel/Renderer/Pipeline/Pipeline.cpp" "src/Lavendel/Renderer/Core/Device.cpp" "src/Lavendel/Renderer/Core/Device.h"
-        "src/Lavendel/Renderer/Core/Swapchain.cpp" "src/Lavendel/Renderer/Core/Swapchain.h" "src/Lavendel/Renderer/Renderer.h" "src/Lavendel/Renderer/Renderer.cpp"
+        "src/Lavendel/Core/Core.h"
+        "src/Lavendel/Core/Application.h"
+        "src/Lavendel/Core/Application.cpp"
+        "src/Lavendel/Core/Entrypoint.h"
+        "src/Lavendel/Renderer/Renderer.h"
+        "src/Lavendel/Renderer/Renderer.cpp"
+        "src/Lavendel/Core/Log.h"
+        "src/Lavendel/Core/Log.cpp"
+        "src/Lavendel/Events/ApplicationEvent.h"
+        "src/Lavendel/Events/Event.h"
+        "src/Lavendel/Events/KeyEvent.h"
+        "src/Lavendel/Events/MouseEvent.h"
+        "src/Lavendel/Renderer/Window.cpp"
+        "src/Lavendel/Renderer/Window.h"
+        "src/Lavendel/Renderer/Pipeline/Pipeline.h"
+        "src/Lavendel/Renderer/Pipeline/Pipeline.cpp"
+        "src/Lavendel/Renderer/Core/Device.cpp"
+        "src/Lavendel/Renderer/Core/Device.h"
+        "src/Lavendel/Renderer/Core/Swapchain.cpp"
+        "src/Lavendel/Renderer/Core/Swapchain.h"
+        "src/Lavendel/Renderer/Renderer.h"
+        "src/Lavendel/Renderer/Renderer.cpp"
         "src/Lavendel/Renderer/Model/Model.cpp"
         "src/Lavendel/Renderer/Model/Model.h"
         "src/lvpch.cpp"
@@ -33,8 +40,8 @@ add_library(Lavendel SHARED
         "src/Lavendel/Renderer/Model/GameObject.h"
         "src/Lavendel/Renderer/Framebuffer.h"
         "src/Lavendel/Renderer/Framebuffer.cpp"
-        "Plattform/VulkanFramebuffer.cpp"
-        "Plattform/VulkanFramebuffer.h"
+        "src/Lavendel/Plattform/VulkanFramebuffer.cpp"
+        "src/Lavendel/Plattform/VulkanFramebuffer.h"
  )
 
 if(WIN32 OR UNIX)
@@ -89,6 +96,7 @@ target_include_directories(Lavendel PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/vendor/sdl3/include
         ${CMAKE_CURRENT_SOURCE_DIR}/vendor/imgui
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_compile_definitions(Lavendel PRIVATE

@@ -1,17 +1,17 @@
 #pragma once
 
 // ====== CORE INCLUDES ====== //
-#include "Lavendel/Core.h"
+#include "Lavendel/Core/Core.h"
 #include "Lavendel/Layers/Layer.h"
 
 // ====== APPLICATION INCLUDES ====== //
-#include "Lavendel/Application.h"
+#include "Lavendel/Core/Application.h"
 
 // ====== LOG INCLUDES ====== //
-#include "Lavendel/Log.h"
+#include "Lavendel/Core/Log.h"
 
 // ====== ENTRYPOINT INCLUDES ====== //
-#include "Lavendel/Entrypoint.h"
+#include "Lavendel/Core/Entrypoint.h"
 
 
 #include "Lavendel/ImGui/ImGuiLayer.h"

@@ -87,10 +87,9 @@ namespace Lavendel {
 				switch (event.type)
 				{
 				case SDL_EVENT_QUIT:
-					running = false;
 					{
 						LV_PROFILE_SCOPE("WindowClose Event");
-						Shutdown();
+						RenderAPI::Renderer::requestShutdown();
 						WindowCloseEvent e; // defined in Events/ApplicationEvent.h
 						OnEvent(e); // dispatch to layers
 					}
@@ -120,7 +119,6 @@ namespace Lavendel {
 
 			if (s_ShutdownRequested)
 			{
-				LV_CORE_TRACE(";AJSLDKJALKJDLAJSD");
 				vkDeviceWaitIdle(RenderAPI::Renderer::getDevice()->device());
 				Shutdown();
 				break;

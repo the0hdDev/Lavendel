@@ -6,9 +6,8 @@
 // Include the SDL3-specific headers (CMake adds vendor/ImGui to include paths).
 #include "imgui.h"
 #include "imgui_impl_sdl3.h"
-#include "Lavendel/Log.h"
+#include "Lavendel/Core/Log.h"
 #include "Lavendel/Renderer/Renderer.h"
-#include "Lavendel/Log.h"
 
 namespace Lavendel {
 	

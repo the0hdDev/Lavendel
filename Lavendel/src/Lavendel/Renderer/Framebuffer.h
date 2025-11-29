@@ -1,14 +1,25 @@
 #pragma once
+#include "Lavendel/Core/Core.h"
 
 namespace Lavendel {
 namespace RenderAPI {
 
-struct FramebufferSpecification {};
+	struct FramebufferSpecification 
+	{
+		u32 Width, Height; 
+		u32 Samples = 1;
 
-class Framebuffer {
-public:
-  static Ref<Framebuffer> Create(FramebufferSpecification specs);
-}
+		bool SwapChainTarget = false;
+	};
 
-} // namespace RenderAPI
+	class Framebuffer
+	{
+	public:
+		virtual const FramebufferSpecification& getSpecification() const = 0;
+		static Ref<Framebuffer> Create(const FramebufferSpecification& specs);
+
+
+		};
+
+	} // namespace RenderAPI
 } // namespace Lavendel

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "lvpch.h"
-#include "../../Core.h"
-#include "../Window.h"
+#include "Lavendel/Core/Core.h"
+#include "Lavendel/Renderer/Window.h"
 
 namespace Lavendel {
     namespace RenderAPI {

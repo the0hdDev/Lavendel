@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Lavendel/Core.h"
+#include "Lavendel/Core/Core.h"
 
 #include <string>
 #include <functional>

@@ -1,6 +1,6 @@
 #include "lvpch.h"
 #include "ImGuiRenderer.h"
-#include "Lavendel/Log.h"
+#include "Lavendel/Core/Log.h"
 #include <vulkan/vulkan.h>
 #include <SDL3/SDL.h>
 
