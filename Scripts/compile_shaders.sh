@@ -1,0 +1,1 @@
+/usr/local/bin/glslc Lavendel/src/Lavendel/Renderer/Shader/shader.vert -o Lavendel/src/Lavendel/Renderer/Shader/shader.vert.spv
