@@ -17,3 +17,15 @@ vendor/
 #
 fzf.exe
 cmake-build-debug
+
+venv
+Scripts/.venv
+Scripts/__pycache__
+Scripts/VulkanSDKInstaller.exe
+
+imgui.ini
+LavendelProfile-Runtime.json
+LavendelProfile-Startup.json
+
+.cache/
+.zed/
