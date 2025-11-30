@@ -40,8 +40,8 @@ add_library(Lavendel SHARED
         "src/Lavendel/Renderer/Model/GameObject.h"
         "src/Lavendel/Renderer/Framebuffer.h"
         "src/Lavendel/Renderer/Framebuffer.cpp"
-        "src/Lavendel/Plattform/VulkanFramebuffer.cpp"
-        "src/Lavendel/Plattform/VulkanFramebuffer.h"
+        "src/Lavendel/Plattform/Vulkan/VulkanFramebuffer.cpp"
+        "src/Lavendel/Plattform/Vulkan/VulkanFramebuffer.h"
  )
 
 if(WIN32 OR UNIX)
