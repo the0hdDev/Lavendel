@@ -48,6 +48,7 @@ add_compile_definitions(
 
 # === SUBDIRECTORIES ===
 add_subdirectory(Lavendel)
-add_subdirectory(Sandbox)
+# add_subdirectory(Sandbox)
+add_subdirectory(Lavendel-Editor)
 
 target_compile_definitions(Lavendel PRIVATE LV_BUILD_DLL)
