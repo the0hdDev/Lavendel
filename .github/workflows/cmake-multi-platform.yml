@@ -63,4 +63,4 @@ jobs:
           cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
       - name: Build
-        run: cmake --build build --config ${{ matrix. build_type }}
+        run: cmake --build build --config ${{ matrix.build_type }}
