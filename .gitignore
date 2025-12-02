@@ -29,3 +29,6 @@ LavendelProfile-Startup.json
 
 .cache/
 .zed/
+
+
+cmake/
