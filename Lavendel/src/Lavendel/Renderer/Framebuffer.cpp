@@ -3,12 +3,11 @@
 #include "Lavendel/Renderer/Renderer.h"
 #include "lvpch.h"
 
-namespace Lavendel {
-namespace RenderAPI {
+namespace Lavendel::Renderer {
 
-Ref<Framebuffer> Framebuffer::Create(const FramebufferSpecification &spec) {
-  return CreateRef<VulkanFramebuffer>(Renderer::getDevice(), spec);
+  Ref<Framebuffer> Framebuffer::Create(const FramebufferSpecification &spec) {
+    return CreateRef<VulkanFramebuffer>(Renderer::getDevice(), spec);
 }
 
-} // namespace RenderAPI
+
 } // namespace Lavendel
