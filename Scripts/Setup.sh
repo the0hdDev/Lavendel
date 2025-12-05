@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=== Lavendel Setup (Linux/macOS) ==="
+echo "=== Velt Setup (Linux/macOS) ==="
 
 if ! command -v python3 &> /dev/null
 then

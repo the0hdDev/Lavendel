@@ -1,25 +1,25 @@
-#include <Lavendel.h>
+#include <Velt.h>
 #include <ImGui/ImGuiLayer.h>
 
-class ExampleLayer : public Lavendel::Layer
+class ExampleLayer : public Velt::Layer
 {
 	public:
-	ExampleLayer() : Layer("Example") { LV_PROFILE_FUNCTION(); }
+	ExampleLayer() : Layer("Example") { VT_PROFILE_FUNCTION(); }
 	void OnUpdate() override
 	{
-		LV_PROFILE_FUNCTION();
-		//LV_CORE_INFO("ExampleLayer::Update");
+		VT_PROFILE_FUNCTION();
+		//VT_CORE_INFO("ExampleLayer::Update");
 	}
-	void OnEvent(Lavendel::Event& event) override
+	void OnEvent(Velt::Event& event) override
 	{
-		LV_PROFILE_FUNCTION();
-		LV_CORE_INFO("{0}", event.ToString());
+		VT_PROFILE_FUNCTION();
+		VT_CORE_INFO("{0}", event.ToString());
 	}
 
 	void OnImGuiRender() 
 	{
-		LV_PROFILE_FUNCTION();
-		//LV_CORE_INFO("ExampleLayer::OnRender");
+		VT_PROFILE_FUNCTION();
+		//VT_CORE_INFO("ExampleLayer::OnRender");
 
 		ImGui::Begin("Hello from ExampleLayer");
 
@@ -28,24 +28,24 @@ class ExampleLayer : public Lavendel::Layer
 
 
 
-class Sandbox : public  Lavendel::Application
+class Sandbox : public  Velt::Application
 {
 public: 
 		Sandbox() 
 		{
-			LV_PROFILE_FUNCTION();
+			VT_PROFILE_FUNCTION();
 			PushLayer(new ExampleLayer());
-			PushOverlay(new Lavendel::ImGuiLayer());
+			PushOverlay(new Velt::ImGuiLayer());
 
 		}
 
 
-		~Sandbox() { LV_PROFILE_FUNCTION(); }
+		~Sandbox() { VT_PROFILE_FUNCTION(); }
 };
 
 
-Lavendel::Application* Lavendel::CreateApplication()
+Velt::Application* Velt::CreateApplication()
 {
-	LV_PROFILE_FUNCTION();
+	VT_PROFILE_FUNCTION();
 	return new Sandbox();
 }

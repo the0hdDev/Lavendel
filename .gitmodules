@@ -1,16 +1,16 @@
-[submodule "Lavendel/vendor/spdlog"]
-	path = Lavendel/vendor/spdlog
+[submodule "Velt/vendor/spdlog"]
+	path = Velt/vendor/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "Lavendel/vendor/sdl3"]
-	path = Lavendel/vendor/sdl3
+[submodule "Velt/vendor/sdl3"]
+	path = Velt/vendor/sdl3
 	url = https://github.com/libsdl-org/SDL
-[submodule "Lavendel/vendor/glm"]
-	path = Lavendel/vendor/glm
+[submodule "Velt/vendor/glm"]
+	path = Velt/vendor/glm
 	url = https://www.github.com/g-truc/glm
-[submodule "Lavendel/vendor/volk"]
-	path = Lavendel/vendor/volk
+[submodule "Velt/vendor/volk"]
+	path = Velt/vendor/volk
 	url = https://www.github.com/zeux/volk
-[submodule "Lavendel/vendor/ImGui"]
-	path = Lavendel/vendor/ImGui
+[submodule "Velt/vendor/ImGui"]
+	path = Velt/vendor/ImGui
 	url = https://github.com/ocornut/imgui
 	branch = docking

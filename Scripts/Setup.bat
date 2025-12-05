@@ -1,5 +1,5 @@
 @echo off
-echo === Lavendel Setup (Windows) ===
+echo === Velt Setup (Windows) ===
 
 python --version >nul 2>&1
 if errorlevel 1 (

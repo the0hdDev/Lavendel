@@ -4,7 +4,7 @@ import os
 import importlib.util
 from pathlib import Path
 
-VENV_DIR = Path(__file__).parent.resolve().parent / "venv"
+VENV_DIR = Path(__file__).parent.resovte().parent / "venv"
 
 def CreateVirtualEnv():
     if not VENV_DIR.exists():

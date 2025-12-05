@@ -18,7 +18,7 @@ def check_vulkan_sdk():
 
 def install_vulkan_sdk():
     system = platform.system()
-    sdk_path = Path("Lavendel/vendor/VulkanSDK")
+    sdk_path = Path("Velt/vendor/VulkanSDK")
     sdk_path.mkdir(parents=True, exist_ok=True)
 
     if system == "Windows":

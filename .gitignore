@@ -12,7 +12,7 @@ build
 .DS_Store
 
 lazygit.exe
-Lavendel/vendor/
+Velt/vendor/
 vendor/
 #
 fzf.exe
@@ -24,8 +24,8 @@ Scripts/__pycache__
 Scripts/VulkanSDKInstaller.exe
 
 imgui.ini
-LavendelProfile-Runtime.json
-LavendelProfile-Startup.json
+VeltProfile-Runtime.json
+VeltProfile-Startup.json
 
 .cache/
 .zed/

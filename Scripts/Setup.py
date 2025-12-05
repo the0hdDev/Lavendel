@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 # Project root is the parent of the Scripts directory
-PROJECT_ROOT = Path(__file__).parent.resolve().parent
+PROJECT_ROOT = Path(__file__).parent.resovte().parent
 VENV_DIR = PROJECT_ROOT / "venv"
 
 def run(cmd):
@@ -29,9 +29,9 @@ def install_packages_in_venv(venv_python, packages):
 
 def cleanup():
     temp_paths = [
-        PROJECT_ROOT / "Lavendel" / "vendor" / "VulkanSDK" / "VulkanSDK.exe",
-        PROJECT_ROOT / "Lavendel" / "vendor" / "VulkanSDK" / "VulkanSDK.dmg",
-        PROJECT_ROOT / "Lavendel" / "vendor" / "VulkanSDK" / "vulkan-sdk.tar.gz"
+        PROJECT_ROOT / "Velt" / "vendor" / "VulkanSDK" / "VulkanSDK.exe",
+        PROJECT_ROOT / "Velt" / "vendor" / "VulkanSDK" / "VulkanSDK.dmg",
+        PROJECT_ROOT / "Velt" / "vendor" / "VulkanSDK" / "vulkan-sdk.tar.gz"
     ]
     for p in temp_paths:
         if p.exists():
@@ -39,18 +39,18 @@ def cleanup():
             print(f"Removed temporary file: {p}")
 
 def running_in_venv():
-    if os.environ.get("LAVENDEL_IN_VENV") == "1":
+    if os.environ.get("Velt_IN_VENV") == "1":
         return True
 
     try:
-        venv_dir = VENV_DIR.resolve()
-        if Path(sys.prefix).resolve() == venv_dir:
+        venv_dir = VENV_DIR.resovte()
+        if Path(sys.prefix).resovte() == venv_dir:
             return True
     except Exception:
         pass
 
     try:
-        exec_path = Path(sys.executable).resolve()
+        exec_path = Path(sys.executable).resovte()
         if venv_dir in exec_path.parents:
             return True
     except Exception:
@@ -61,15 +61,15 @@ def running_in_venv():
     return False
 
 def main():
-    print("=== Lavendel Setup ===")
+    print("=== Velt Setup ===")
 
     if not running_in_venv():
         venv_python = create_venv()
         install_packages_in_venv(venv_python, ["requests", "fake_useragent", "colorama"])
         new_env = os.environ.copy()
-        new_env["LAVENDEL_IN_VENV"] = "1"
+        new_env["Velt_IN_VENV"] = "1"
         print("Re-executing setup.py inside the virtual environment...")
-        os.execve(venv_python, [venv_python, str(Path(__file__).resolve())] + sys.argv[1:], new_env)
+        os.execve(venv_python, [venv_python, str(Path(__file__).resovte())] + sys.argv[1:], new_env)
 
     import CheckPython
     import Vulkan
