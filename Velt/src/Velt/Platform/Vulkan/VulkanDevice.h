@@ -26,7 +26,7 @@ namespace Velt::Renderer::Vulkan {
             bool isComplete() { return graphicsFamilyHasValue && presentFamilyHasValue; }
         };
 
-		class VELT_API VulkanDevice : public Renderer::Device
+		class VELT_API VulkanDevice : public Device
         {
         public:
         #ifdef NDEBUG

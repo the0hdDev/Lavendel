@@ -1,5 +1,6 @@
 #pragma once
 #include "Velt/Core/Core.h"
+#include "Velt/Renderer/RenderCommandBuffer.h"
 
 namespace Velt::Renderer
 {

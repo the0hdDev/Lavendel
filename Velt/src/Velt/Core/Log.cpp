@@ -10,7 +10,7 @@ namespace Velt {
     void Log::Init()
     {
         VT_PROFILE_FUNCTION();
-        
+
 
         auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
         consoleSink->set_pattern("%^[%T] %n: %v%$");
@@ -21,14 +21,14 @@ namespace Velt {
         std::vector<spdlog::sink_ptr> coreSinks = { consoleSink, s_FileSink };
         s_CoreLogger = std::make_shared<spdlog::logger>("Velt", coreSinks.begin(), coreSinks.end());
         s_CoreLogger->set_level(spdlog::level::trace);
-        s_CoreLogger->flush_on(spdlog::level::trace); 
+        s_CoreLogger->flush_on(spdlog::level::trace);
         spdlog::register_logger(s_CoreLogger);
 
 
         std::vector<spdlog::sink_ptr> clientSinks = { consoleSink, s_FileSink };
         s_ClientLogger = std::make_shared<spdlog::logger>("APP", clientSinks.begin(), clientSinks.end());
         s_ClientLogger->set_level(spdlog::level::trace);
-        s_ClientLogger->flush_on(spdlog::level::trace); 
+        s_ClientLogger->flush_on(spdlog::level::trace);
         spdlog::register_logger(s_ClientLogger);
 
     }

@@ -6,7 +6,7 @@
 
 namespace Velt {
 
-	ImGuiRenderer::ImGuiRenderer(RenderAPI::SwapChain* swapchain, RenderAPI::GPUDevice* device, SDL_Window* window)
+	ImGuiRenderer::ImGuiRenderer(Renderer::Vulkan::VulkanSwapchain* swapchain, Renderer::Vulkan::VulkanDevice* device, SDL_Window* window)
 		: m_Swapchain(swapchain), m_Device(device), m_Window(window)
 	{
 		VT_PROFILE_FUNCTION();
@@ -52,7 +52,7 @@ namespace Velt {
 		}
 
 		// Initialize ImGui for Vulkan
-		ImGui_Impvtulkan_InitInfo init_info = {};
+		ImGui_ImplVulkan_InitInfo init_info = {};
 		init_info.Instance = m_Device->getInstance();
 		init_info.PhysicalDevice = m_Device->getPhysicalDevice();
 		init_info.Device = m_Device->device();
@@ -63,7 +63,7 @@ namespace Velt {
 		init_info.ImageCount = m_Swapchain->imageCount();
 		init_info.PipelineInfoMain.RenderPass = m_Swapchain->getRenderPass();
 
-		if (!ImGui_Impvtulkan_Init(&init_info))
+		if (!ImGui_ImplVulkan_InitInfo(&init_info))
 		{
 			VT_CORE_ERROR("Failed to initialize ImGui Vulkan backend!");
 			throw std::runtime_error("Failed to initialize ImGui Vulkan backend!");
@@ -78,7 +78,7 @@ namespace Velt {
 	void ImGuiRenderer::Shutdown()
 	{
 		VT_PROFILE_FUNCTION();
-		ImGui_Impvtulkan_Shutdown();
+		ImGui_ImplVulkan_InitInfo();
 		ImGui_ImplSDL3_Shutdown();
 		
 		if (m_DescriptorPool != nullptr)
@@ -95,7 +95,7 @@ namespace Velt {
 	{
 		VT_PROFILE_FUNCTION();
 		ImGui_ImplSDL3_NewFrame();
-		ImGui_Impvtulkan_NewFrame();
+		ImGui_ImplVulkan_InitInfo();
 		ImGui::NewFrame();
 	}
 
@@ -112,7 +112,7 @@ namespace Velt {
 		if (draw_data != nullptr)
 		{
 			// Log draw data stats for debugging: number of command lists and total vertices
-			int total_vtx = draw_data->TotavttxCount;
+			int total_vtx = draw_data->TotalVtxCount;
 			int total_idx = draw_data->TotalIdxCount;
 			if (total_vtx == 0)
 			{
@@ -122,7 +122,7 @@ namespace Velt {
 			{
 				//VT_CORE_INFO("ImGui draw data: lists=%d verts=%d idx=%d", draw_data->CmdListsCount, total_vtx, total_idx);
 			}
-			ImGui_Impvtulkan_RenderDrawData(draw_data, commandBuffer);
+			ImGui_ImplVulkan_RenderDrawData(draw_data, commandBuffer);
 		}
 	}
 }
