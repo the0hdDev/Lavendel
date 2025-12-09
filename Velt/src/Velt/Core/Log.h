@@ -31,6 +31,7 @@ namespace Velt {
 
 }
 
+
 // Core log macros with null checks
 #define VT_CORE_TRACE(...)    if(::Velt::Log::GetCoreLogger()) ::Velt::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define VT_CORE_INFO(...)     if(::Velt::Log::GetCoreLogger()) ::Velt::Log::GetCoreLogger()->info(__VA_ARGS__)
@@ -45,4 +46,5 @@ namespace Velt {
 #define VT_WARN(...)	      if(::Velt::Log::GetClientLogger()) ::Velt::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define VT_ERROR(...)	      if(::Velt::Log::GetClientLogger()) ::Velt::Log::GetClientLogger()->error(__VA_ARGS__)
 #define VT_FATAL(...)	      if(::Velt::Log::GetClientLogger()) ::Velt::Log::GetClientLogger()->critical(__VA_ARGS__)
-#define VT_ASSERT(...).       if(::Velt::Log::GetClientLogger()) ::Velt::Log::GetClientLogger()->assert(__VA_ARGS__)
+#define VT_ASSERT(...)        if(::Velt::Log::GetClientLogger()) ::Velt::Log::GetClientLogger()->assert(__VA_ARGS__)
+

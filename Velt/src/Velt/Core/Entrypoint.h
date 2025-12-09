@@ -27,31 +27,31 @@ int main(int argc, char** argv)
 }
 
 
-/*
 
-#ifdef VT_PLATFORM_LINUX
-
-extern Velt::Application* Velt::CreateApplication();
-
-int main(int argc, char** argv)
-{
-	Velt::Log::Init();
-	auto app = Velt::CreateApplication();
-	app->Run();
-	delete app;
-}
-
-#endif 
-
-
-#ifdef VT_PLATFORM_OSX
-extern Velt::Application* Velt::CreateApplication();
-
-int main(int argc, char** argv)
-{
-	Velt::Log::Init();
-	auto app = Velt::CreateApplication();
-	app->Run();
-	delete app;
-}
-#endif */
+//
+//#ifdef VT_PLATFORM_LINUX
+//
+//extern Velt::Application* Velt::CreateApplication();
+//
+//int main(int argc, char** argv)
+//{
+//	Velt::Log::Init();
+//	auto app = Velt::CreateApplication();
+//	app->Run();
+//	delete app;
+//}
+//
+//#endif 
+//
+//
+//#ifdef VT_PLATFORM_OSX
+//extern Velt::Application* Velt::CreateApplication();
+//
+//int main(int argc, char** argv)
+//{
+//	Velt::Log::Init();
+//	auto app = Velt::CreateApplication();
+//	app->Run();
+//	delete app;
+//}
+//#endif 
