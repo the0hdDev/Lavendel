@@ -1,4 +1,4 @@
-name: Setup Dependencies
+name: Build and Test
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -23,10 +23,23 @@ jobs:
       with:
         python-version: '3.9'
 
-    - name: Install Python dependencies
-      run: pip install requests fake_useragent colorama
+    - name: Setup Vulkan SDK
+      uses: j-bbr/setup-vulkan-sdk@v1.3.0
+      with:
+        vulkan-query-version: "1.3.268.0"
+        vulkan-components: "Vulkan-Headers, Vulkan-Loader"
+        vulkan-install-path: "VULKAN_INSTALL_PATH" # an environment variable will be created with the installation path
 
     - name: Run Setup Script
       env:
         CI: 'true'
+        VULKAN_SDK: ${{ env.VULKAN_INSTALL_PATH }}
       run: python Scripts/Setup.py
+      
+    - name: Configure CMake
+      env:
+        VULKAN_SDK: ${{ env.VULKAN_INSTALL_PATH }}
+      run: cmake . -B build
+
+    - name: Build Project
+      run: cmake --build build --config Release

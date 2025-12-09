@@ -72,16 +72,11 @@ def main():
         os.execve(venv_python, [venv_python, str(Path(__file__).resolve())] + sys.argv[1:], new_env)
 
     import CheckPython
-    import Vulkan
 
     try:
         CheckPython.ValidatePackages()
     except Exception as e:
         print(f"Warning: ValidatePackages raised: {e}")
-
-    if not Vulkan.ensure_vulkan():
-        print("Vulkan SDK setup failed or canceled.")
-        sys.exit(1)
 
     print("Updating Git submodules...")
     run("git submodule update --init --recursive")
