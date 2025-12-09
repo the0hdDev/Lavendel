@@ -32,9 +32,9 @@ jobs:
 
       - name: Install Vulkan SDK (Windows)
         if: runner.os == 'Windows'
-        uses: humbletim/install-vulkan-sdk@v1.3.0
-        with:
-          version: latest
+        uses: humbletim/install-vulkan-sdk@v1.2
+        with: 
+          version: 1.4.328.1
           cache: true
 
       - name: Install dependencies (Ubuntu)
