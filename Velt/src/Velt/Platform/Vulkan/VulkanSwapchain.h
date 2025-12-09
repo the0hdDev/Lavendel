@@ -66,7 +66,7 @@ namespace Velt::Renderer::Vulkan {
         VkExtent2D swapChainExtent;
 
         std::vector<Framebuffer> swapChainFramebuffers;
-        Renderpass renderPass;
+        RenderPass renderPass;
 
         std::vector<VkImage> depthImages;
         std::vector<VkDeviceMemory> depthImageMemorys;

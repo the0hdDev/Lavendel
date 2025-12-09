@@ -33,7 +33,6 @@ namespace Velt::Renderer::Vulkan {
 
 		VkCommandBuffer GetCommandBuffer(u32 frameIndex) const
 		{
-			VT_CORE_ASSERT(frameIndex < m_CommandBuffers.size());
 			return m_CommandBuffers[frameIndex];
 		}
 	private:

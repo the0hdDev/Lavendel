@@ -158,7 +158,7 @@ namespace Velt::Renderer::Vulkan {
         void VulkanSwapchain::createVulkanSwapchain()
         {
             VT_PROFILE_FUNCTION();
-            VulkanSwapchainSupportDetails swapChainSupport = m_Device.getVulkanSwapchainSupport();
+            VkSwapchainSupportDetails swapChainSupport = m_Device.getVkSwapchainSupport();
 
             VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
             VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -299,7 +299,7 @@ namespace Velt::Renderer::Vulkan {
             renderPassInfo.pAttachments = attachments.data();
             renderPassInfo.subpassCount = 1;
             renderPassInfo.pSubpasses = &subpass;
-            renderPassInfo.dependencyCount = 1;
+            renderPassInfo.dependencyCount = 1;                  
             renderPassInfo.pDependencies = &dependency;
 
             if (vkCreateRenderPass(m_Device.device(), &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS)
