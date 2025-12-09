@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 # Project root is the parent of the Scripts directory
-PROJECT_ROOT = Path(__file__).parent.resovte().parent
+PROJECT_ROOT = Path(__file__).parent.resolve().parent
 VENV_DIR = PROJECT_ROOT / "venv"
 
 def run(cmd):
@@ -43,14 +43,14 @@ def running_in_venv():
         return True
 
     try:
-        venv_dir = VENV_DIR.resovte()
-        if Path(sys.prefix).resovte() == venv_dir:
+        venv_dir = VENV_DIR.resolve()
+        if Path(sys.prefix).resolve() == venv_dir:
             return True
     except Exception:
         pass
 
     try:
-        exec_path = Path(sys.executable).resovte()
+        exec_path = Path(sys.executable).resolve()
         if venv_dir in exec_path.parents:
             return True
     except Exception:
@@ -69,7 +69,7 @@ def main():
         new_env = os.environ.copy()
         new_env["Velt_IN_VENV"] = "1"
         print("Re-executing setup.py inside the virtual environment...")
-        os.execve(venv_python, [venv_python, str(Path(__file__).resovte())] + sys.argv[1:], new_env)
+        os.execve(venv_python, [venv_python, str(Path(__file__).resolve())] + sys.argv[1:], new_env)
 
     import CheckPython
     import Vulkan

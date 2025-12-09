@@ -42,6 +42,8 @@ def install_vulkan_sdk():
 def ensure_vulkan():
     if check_vulkan_sdk():
         return True
-    if YesOrNo("Do you want to download and install Vulkan SDK?"):
+
+    if os.environ.get('CI') == 'true' or YesOrNo("Do you want to download and install Vulkan SDK?"):
         return install_vulkan_sdk()
+        
     return False
