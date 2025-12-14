@@ -21,6 +21,6 @@ namespace Velt::Renderer
         virtual void Unbind() const = 0;
         
 
-        static IndexBuffer* Create(IndexBufferElement* elements);
+        static IndexBuffer* Create(void* data, u32 size, u32 );
     }
 } 

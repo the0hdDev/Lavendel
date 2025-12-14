@@ -1,4 +1,4 @@
-namespace Velt::RenderAPI
+namespace Velt::Renderer
 {
 	enum class API
 	{

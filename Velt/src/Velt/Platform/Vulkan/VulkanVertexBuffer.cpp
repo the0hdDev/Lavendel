@@ -7,7 +7,7 @@ namespace Velt::Renderer::Vulkan
     VulkanVertexBuffer::VulkanVertexBuffer(
         const void* vertexData, // data
         u32 vertexCount, // count 
-        VkDeviceSize vertexStride // size 
+        u64 vertexStride // size 
     ) :   m_VertexCount(vertexCount),
           m_VertexStride(vertexStride)
     {
