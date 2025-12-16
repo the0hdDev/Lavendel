@@ -7,12 +7,12 @@
 
 namespace Velt::Renderer::Vulkan {
 
-	class VulkanRenderCommandBuffer : public RenderCommandBuffer
+	class VulkanCommandBuffer : public RenderCommandBuffer
 	{
 	public:
-		VulkanRenderCommandBuffer(u32 count = 0, std::string debugName = "");
-		VulkanRenderCommandBuffer(std::string debugName, bool swapchain);
-		~VulkanRenderCommandBuffer() override;
+		VulkanCommandBuffer(u32 count = 0, std::string debugName = "");
+		VulkanCommandBuffer(std::string debugName, bool swapchain);
+		~VulkanCommandBuffer() override;
 
 		virtual void Begin() override;
 		virtual void End() override;

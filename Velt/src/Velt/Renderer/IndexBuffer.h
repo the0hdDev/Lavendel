@@ -3,24 +3,20 @@
 
 namespace Velt::Renderer
 {
-
-    struct IndexBufferElement
-    {
-        u32 Size;
-        u32 *indices;
-    };
-
     class IndexBuffer
     {
     public:
-        virtual ~VertexBuffer() {};
-
-//        virtual void SetData(const void* data, u32 size) = 0;
+        virtual ~IndexBuffer() {};
 
         virtual void Bind() const = 0;
-        virtual void Unbind() const = 0;
         
+        virtual void CreateBuffer(void* buffer, u64 size, u64 offset = 0);
 
-        static IndexBuffer* Create(void* data, u32 size, u32 );
-    }
+        virtual u32 GetCount() const;
+        virtual u64 GetSize() const;
+        virtual u32 GetRendererID() const;
+
+        static Ref<IndexBuffer> Create(u64 size);
+        static Ref<IndexBuffer> Create(void* data, u64 size = 0);
+    };
 } 
