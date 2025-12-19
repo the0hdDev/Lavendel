@@ -21,6 +21,7 @@ namespace Velt::Renderer {
 
 	void Renderer::requestShutdown()
 	{
+		VT_PROFILE_FUNCTION();
 		Velt::Application::s_ShutdownRequested = true;
 	};
 

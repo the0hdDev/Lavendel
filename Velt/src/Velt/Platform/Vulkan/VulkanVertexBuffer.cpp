@@ -41,6 +41,7 @@ namespace Velt::Renderer::Vulkan
 
     void VulkanVertexBuffer::CreateBuffer(const void* data)
     {
+        VT_PROFILE_FUNCTION();
         VkDeviceSize bufferSize = m_VertexStride * m_VertexCount;
 
         
@@ -70,11 +71,11 @@ namespace Velt::Renderer::Vulkan
 
     void VulkanVertexBuffer::Bind() const
     {
-
+        VT_PROFILE_FUNCTION();
     }
 
     void VulkanVertexBuffer::Unbind() const
     {
- 
+        VT_PROFILE_FUNCTION();
     }
 }

@@ -6,6 +6,7 @@ namespace Velt::Renderer::Vulkan {
 
 VkFormat VulkanFramebuffer::FramebufferTextureFormatToVulkan(
     FramebufferTextureFormat format) {
+      VT_PROFILE_FUNCTION();
   switch (format) {
   case FramebufferTextureFormat::RGBA8:
     return VK_FORMAT_R8G8B8A8_UNORM;
@@ -25,6 +26,7 @@ VkFormat VulkanFramebuffer::FramebufferTextureFormatToVulkan(
 
 bool VulkanFramebuffer::IsDepthFormat(FramebufferTextureFormat format) {
   switch (format) {
+    VT_PROFILE_FUNCTION();
   case FramebufferTextureFormat::DEPTH24STENCIL8:
   case FramebufferTextureFormat::DEPTH32F:
     return true;
@@ -35,6 +37,7 @@ bool VulkanFramebuffer::IsDepthFormat(FramebufferTextureFormat format) {
 
 VulkanFramebuffer::VulkanFramebuffer(VulkanDevice *device,
                                      const FramebufferSpecification &spec)
+ VT_PROFILE_FUNCTION();
     : m_Device(device), m_Specification(spec),
       m_DepthAttachmentSpecification(FramebufferTextureFormat::None) {
 
@@ -50,6 +53,7 @@ VulkanFramebuffer::VulkanFramebuffer(VulkanDevice *device,
 VulkanFramebuffer::~VulkanFramebuffer() { Cleanup(); }
 
 void VulkanFramebuffer::Cleanup() {
+  VT_PROFILE_FUNCTION();
   if (m_Device == VK_NULL_HANDLE)
     return;
 
@@ -99,7 +103,9 @@ void VulkanFramebuffer::Cleanup() {
   }
 }
 
-void VulkanFramebuffer::Invalidate() {
+void VulkanFramebuffer::Invalidate() 
+{
+  VT_PROFILE_FUNCTION();
   Cleanup();
 
   CreateRenderPass();
@@ -108,7 +114,9 @@ void VulkanFramebuffer::Invalidate() {
   CreateFramebuffer();
 }
 
-void VulkanFramebuffer::CreateRenderPass() {
+void VulkanFramebuffer::CreateRenderPass() 
+{
+  VT_PROFILE_FUNCTION();
   std::vector<VkAttachmentDescription> attachments;
   std::vector<VkAttachmentReference> colorAttachmentRefs;
 
@@ -192,7 +200,9 @@ void VulkanFramebuffer::CreateRenderPass() {
   }
 }
 
-void VulkanFramebuffer::CreateImages() {
+void VulkanFramebuffer::CreateImages()
+ {
+  VT_PROFILE_FUNCTION();
   VkSampleCountFlagBits sampleCount =
       static_cast<VkSampleCountFlagBits>(m_Specification.Samples);
 
@@ -281,7 +291,9 @@ void VulkanFramebuffer::CreateImages() {
   }
 }
 
-void VulkanFramebuffer::CreateImageViews() {
+void VulkanFramebuffer::CreateImageViews() 
+{
+  VT_PROFILE_FUNCTION();
   for (size_t i = 0; i < m_ColorImages.size(); i++) {
     VkImageViewCreateInfo viewInfo{};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
@@ -333,7 +345,9 @@ void VulkanFramebuffer::CreateImageViews() {
   }
 }
 
-void VulkanFramebuffer::CreateFramebuffer() {
+void VulkanFramebuffer::CreateFramebuffer() 
+{
+  VT_PROFILE_FUNCTION();
   std::vector<VkImageView> attachments;
 
   for (const auto &colorView : m_ColorImageViews) {
@@ -359,7 +373,9 @@ void VulkanFramebuffer::CreateFramebuffer() {
   }
 }
 
-void VulkanFramebuffer::BeginRenderPass(VkCommandBuffer commandBuffer) {
+void VulkanFramebuffer::BeginRenderPass(VkCommandBuffer commandBuffer) 
+{
+  VT_PROFILE_FUNCTION();
   VkRenderPassBeginInfo renderPassInfo{};
   renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
   renderPassInfo.renderPass = m_RenderPass;
@@ -406,10 +422,13 @@ void VulkanFramebuffer::BeginRenderPass(VkCommandBuffer commandBuffer) {
 // we are taking in a void* because it needs to be compatible with the base / the other apis 
 void VulkanFramebuffer::EndRenderPass(void* commandBuffer)
 {
+  VT_PROFILE_FUNCTION();
   vkCmdEndRenderPass(reinterpret_cast<VkCommandBuffer>(commandBuffer));
 }
 
-void VulkanFramebuffer::Resize(u32 width, u32 height) {
+void VulkanFramebuffer::Resize(u32 width, u32 height) 
+{
+  VT_PROFILE_FUNCTION();
   if (width == 0 || height == 0 || width > s_MaxFramebufferSize ||
       height > s_MaxFramebufferSize) {
     return;
@@ -432,7 +451,9 @@ int VulkanFramebuffer::ReadPixel(u32 attachmentIndex, int x, int y) {
   return 0; // Placeholder
 }
 
-void VulkanFramebuffer::ClearAttachment(u32 attachmentIndex, int value) {
+void VulkanFramebuffer::ClearAttachment(u32 attachmentIndex, int value) 
+{
+  VT_PROFILE_FUNCTION();
   // TODO: Full impkementation:
   // outside RenderPass: vkCmdClearColorImage
   // inside RenderPass: vkCmdClearAttachments
