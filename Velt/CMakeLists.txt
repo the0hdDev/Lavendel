@@ -72,7 +72,7 @@ add_library(Velt SHARED
         "src/Velt/Renderer/VertexBuffer.h"
         "src/Velt/Renderer/VertexBuffer.cpp"
 
-)
+ "src/Velt/Core/Window.h" "src/Velt/Platform/Windows/WindowsWindow.h" "src/Velt/Platform/Windows/WindowsWindow.cpp")
 
 if(WIN32 OR UNIX)
     set(SHADER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders)
