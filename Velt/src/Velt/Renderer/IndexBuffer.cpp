@@ -8,6 +8,7 @@ namespace Velt::Renderer
 
 	Ref<IndexBuffer> IndexBuffer::Create(const void* data, u64 size)
 	{
+		VT_PROFILE_FUNCTION();
 		switch (RendererAPI::GetAPI())
 		{
 		case API::None:    return nullptr;

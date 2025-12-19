@@ -9,11 +9,13 @@ namespace Velt::Renderer::Vulkan
 	
 	VulkanContext::VulkanContext()
 	{
+		VT_PROFILE_FUNCTION();
 		Init();
 	}
 
 	void VulkanContext::Init()
 	{
+		VT_PROFILE_FUNCTION();
 		VT_CORE_TRACE("Initializing Vulkan Context");
 		s_Device = new VulkanDevice();
 		s_Swapchain = new VulkanSwapchain(s_Device);
@@ -22,6 +24,7 @@ namespace Velt::Renderer::Vulkan
 
 	void VulkanContext::Shutdown()
 	{
+		VT_PROFILE_FUNCTION();
 		VT_CORE_TRACE("Shutting down Vulkan Context");
 		delete s_Pipeline;
 		delete s_Swapchain;

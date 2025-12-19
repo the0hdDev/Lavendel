@@ -675,4 +675,4 @@ namespace Velt::Renderer::Vulkan {
 
         // namespace RendererAPI
 
-}  // namespace Velt
+}  // namespace Velt oioioi sigma lord hehehe du bastard

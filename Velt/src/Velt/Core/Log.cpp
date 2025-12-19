@@ -35,6 +35,8 @@ namespace Velt {
 
     void Log::Flush()
     {
+        VT_PROFILE_FUNCTION();
+        //mhm sehr interessant 
         if (s_CoreLogger)
             s_CoreLogger->flush();
         if (s_ClientLogger)
@@ -43,6 +45,8 @@ namespace Velt {
 
     void Log::SetLogFile(const std::string& filepath)
     {
+        VT_PROFILE_FUNCTION();
+        // ich hab mich eingeschissen (:
         s_FileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filepath, true);
         s_FileSink->set_pattern("[%T] [%l] %n: %v");
     }

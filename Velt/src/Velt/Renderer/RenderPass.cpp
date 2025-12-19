@@ -11,6 +11,7 @@ namespace Velt::Renderer {
 
 	Ref<RenderPass> RenderPass::Create(const RenderPassSpecification& spec)
 	{
+		VT_PROFILE_FUNCTION();
 		switch (RendererAPI::Current())
 		{
 			case RendererAPIType::None:    assert(false, "RendererAPI::None is currently not supported!"); return nullptr;

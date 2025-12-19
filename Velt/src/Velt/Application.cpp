@@ -109,6 +109,7 @@ void Application::Run() {
 }
 
 void Application::Shutdown() {
+  VT_PROFILE_FUNCTION();
   if (RenderAPI::Renderer::getDevice) {
     vkDeviceWaitIdle(RenderAPI::Renderer::getDevice()->device());
   }

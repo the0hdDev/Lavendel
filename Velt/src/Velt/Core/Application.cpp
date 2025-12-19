@@ -44,7 +44,7 @@ namespace Velt {
 		VT_PROFILE_FUNCTION();
 		m_LayerStack.PushLayer(layer);
 
-		// Todo: make events
+		// Todo: make events ja genau 
 		if (auto imgui = dynamic_cast<ImGuiLayer*>(layer))
 			m_ImGuiLayer = imgui;
 	}
@@ -148,6 +148,8 @@ namespace Velt {
 
 	void Application::Shutdown()
 	{
+		////////////////////////////////
+		VT_PROFILE_FUNCTION();
 		if (RenderAPI::Renderer::getDevice) {
 			vkDeviceWaitIdle(RenderAPI::Renderer::getDevice()->device());
 		}
