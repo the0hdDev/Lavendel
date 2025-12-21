@@ -132,7 +132,6 @@ namespace Velt {
 				Shutdown();
 				Velt::Log::Flush();
 				break;
-
 			}
 		}
 	}

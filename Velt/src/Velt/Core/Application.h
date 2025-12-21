@@ -16,27 +16,26 @@ namespace Velt
 		public:
 			Application();
 			virtual ~Application();
-			void Run();
-			void Shutdown();
 
-			void OnEvent(Event& e);
 			void operator=(const Application&) = delete;
 
-			static inline Application& Get() { return *s_Instance;  }
-
+			void Run();
+			void Shutdown();
+		
+			void OnEvent(Event& e);
+		
+			static inline Application& Get() { if (s_Instance) { return *s_Instance; } else VT_CORE_ASSERT(s_Instance, "Application Instance is null.") }
+		
 			void RenderImGui();
 			void PushLayer(Layer* layer);
 			void PushOverlay(Layer* overlay);
-
-
+		
 			// VARS
 			static bool s_ShutdownRequested;
 			static constexpr int WIDTH {1280};
-			static constexpr int HEIGHT { 1280 };
+			static constexpr int HEIGHT { 720 };
 			std::string TITLE { "Velt Engine" };
 
-	private:
-		void setWindowProps(const int width, const int height, const std::string title);
 	private:
 		static Application* s_Instance;
 		WindowProps m_WindowProps;
@@ -44,8 +43,6 @@ namespace Velt
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer = nullptr;
 	};
-
-	// MUST BE DEFINED IN CLIENT
 
 	Application* CreateApplication();
 

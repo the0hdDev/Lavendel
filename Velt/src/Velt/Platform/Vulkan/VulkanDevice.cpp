@@ -61,11 +61,10 @@ namespace Velt::Renderer::Vulkan {
         }
     }
 
-    VulkanDevice::VulkanDevice(Window& window)
+    VulkanDevice::VulkanDevice()
     {
         VT_PROFILE_FUNCTION();
         VT_CORE_INFO("Creating VulkanDevice...");
-        m_Device = new VkDevice;
         createInstance();
         setupDebugMessenger();
         createSurface();
@@ -89,8 +88,6 @@ namespace Velt::Renderer::Vulkan {
 
         vkDestroySurfaceKHR(m_Instance, m_Surface, nullptr);
         vkDestroyInstance(m_Instance, nullptr);
-
-        delete m_Device;
     }
 
     void VulkanDevice::createInstance()
