@@ -3,16 +3,16 @@
 
 namespace Velt::Renderer
 {
-	class RendererContext
+	class RenderContext
 	{
 	public:
-		RendererContext() = default;
-		virtual ~RendererContext() = default;
+		RenderContext() = default;
+		virtual ~RenderContext() = default;
 
 		virtual void Init() = 0;
 		virtual void Shutdown() = 0;
 
-		static Ref<RendererContext> Create();
+		static std::shared_ptr<RenderContext> Create();
 	};
 }
 

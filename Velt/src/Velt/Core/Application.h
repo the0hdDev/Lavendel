@@ -7,9 +7,6 @@
 
 namespace Velt
 {	
-	namespace RenderAPI {
-		class Renderer;
-	}
 		
 	class VELT_API Application
 	{
@@ -29,6 +26,8 @@ namespace Velt
 			void RenderImGui();
 			void PushLayer(Layer* layer);
 			void PushOverlay(Layer* overlay);
+
+			Window* getWindow() { return m_Window.get(); }
 		
 			// VARS
 			static bool s_ShutdownRequested;

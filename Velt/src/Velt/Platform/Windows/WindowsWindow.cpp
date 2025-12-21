@@ -45,6 +45,8 @@ namespace Velt::Windows
 		m_Data.m_Width = props.m_Width;
 		m_Data.m_Height = props.m_Height;
 
+		m_Context = Renderer::RenderContext::Create(); 
+
 		VT_CORE_INFO("Creating WindowsWindow {0} ({1} {2})", m_Data.m_Title, m_Data.m_Width, m_Data.m_Height);
 
 		if (!s_SDLInitialized)
@@ -67,6 +69,8 @@ namespace Velt::Windows
 			VT_CORE_ERROR("Failed to create SDL window: {}", SDL_GetError());
 			return;
 		}
+
+		m_Context->Init();
 
 		SDL_PropertiesID sdlProps = SDL_GetWindowProperties(m_Window);
 		SDL_SetPointerProperty(sdlProps, "WindowInstance", this);

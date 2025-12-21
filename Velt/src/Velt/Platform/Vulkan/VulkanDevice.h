@@ -42,7 +42,7 @@ namespace Velt::Renderer::Vulkan {
 		VulkanDevice& operator=(VulkanDevice&&) = delete;
 
 		VkCommandPool getCommandPool() { return m_CommandPool; }
-		VkDevice* device() { return m_Device; }
+		VkDevice device() { return m_Device; }
 		VkSurfaceKHR surface() { return m_Surface; }
 		VkQueue graphicsQueue() { return m_GraphicsQueue; }
 		VkQueue presentQueue() { return m_PresentQueue; }

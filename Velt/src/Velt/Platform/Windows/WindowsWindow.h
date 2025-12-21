@@ -2,6 +2,7 @@
 #include "Core/Window.h"
 #include "Core/Application.h"
 #include <SDL3/SDL.h>
+#include "Renderer/RenderContext.h"
 
 namespace Velt::Windows 
 {
@@ -26,9 +27,12 @@ namespace Velt::Windows
 		{	return { static_cast<u32>(Application::Get.getWindow.getWidth(), Application::Get.getWindow.getHeight()) };	}
 	private:
 		SDL_Window* m_Window = nullptr;
-		
+		std::shared_ptr<Renderer::RenderContext> m_Context; 
+
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
+
+
 
 		struct WindowData 
 		{
