@@ -5,16 +5,16 @@
 #include "Layers/LayerStack.h"
 #include "ImGui/ImGuiLayer.h"
 
-namespace Velt
-{	
-		
+namespace Velt													
+{
+
 	class VELT_API Application
 	{
-		public:
-			Application();
-			virtual ~Application();
+	public:
+		Application();
+		virtual ~Application();
 
-			void operator=(const Application&) = delete;
+		void operator=(const Application&) = delete;
 
 			void Run();
 			void Shutdown();

@@ -20,15 +20,24 @@ namespace Velt::Renderer::Vulkan
 		virtual void Init() override;
 		virtual void Shutdown() override;
 		
-		static VulkanContext* Get() { return Application::Get.getWindow()->getContext(); }
+		static VulkanContext* Get() { return Application::Get().getWindow()->getContext(); }
 
-		static VulkanDevice* getDevice() { return s_Device; }
-		static VulkanSwapchain* getSwapchain() { return s_Swapchain; }
-		static VulkanPipeline* getPipeline() { return s_Pipeline; }
+		static VkInstance getInstance() { return s_VulkanInstance; }
+		std::shared_ptr<VulkanDevice> getDevice() { return m_Device; }
 
 	private:
-		static VulkanDevice* s_Device;
-		static VulkanSwapchain* s_Swapchain;
-		static VulkanPipeline* s_Pipeline;
+
+		Ref<VulkanDevice> m_Device;
+
+		// Vulkan instance
+		inline static VkInstance s_VulkanInstance;
+#if 0
+		VkDebugReportCallbackEXT m_DebugReportCallback = VK_NULL_HANDLE;
+#endif
+		VkDebugUtilsMessengerEXT m_DebugUtilsMessenger = VK_NULL_HANDLE;
+		VkPipelineCache m_PipelineCache = nullptr;
+
+		VulkanSwapchain m_SwapChain;
+
 	};
 }

@@ -245,7 +245,6 @@ namespace Velt::Renderer::Vulkan {
 
         if (vkCreateCommandPool(m_Device, &poolInfo, nullptr, &m_CommandPool) != VK_SUCCESS)
         {
-            throw std::runtime_error("failed to create command pool!");
             VT_CORE_ERROR("Failed to create command pool!");
         }
     }
@@ -253,7 +252,7 @@ namespace Velt::Renderer::Vulkan {
     void VulkanDevice::createSurface()
     {
         VT_PROFILE_FUNCTION();
-        Application::Get().getWindow.createWindowSurface(static_cast<void*>(m_Instance), static_cast<void*>(&m_Surface));
+        Velt::Application::Get().getWindow.createWindowSurface(static_cast<void*>(m_Instance), static_cast<void*>(&m_Surface));
     }
 
     bool VulkanDevice::isDeviceSuitable(VkPhysicalDevice device)
