@@ -66,7 +66,7 @@ namespace Velt::Renderer::Vulkan
         );
 
         memcpy(mappedData, data, static_cast<size_t>(bufferSize));
-        vkUnmapMemory(*m_Device->device(), m_VertexBufferMemory);
+        vkUnmapMemory(VulkanContext::getDevice()->device(), m_VertexBufferMemory);
     }
 
     void VulkanVertexBuffer::Bind() const
