@@ -1,5 +1,6 @@
 #include "vtpch.h"
 #include "VulkanSwapchain.h"
+#include "VulkanContext.h"
 
 namespace Velt::Renderer::Vulkan {
 
@@ -35,21 +36,23 @@ namespace Velt::Renderer::Vulkan {
         {
             VT_PROFILE_FUNCTION();
 
+            auto device = *VulkanContext::getDevice(); 
+
             if (m_Device.device() == nullptr) {
                 VT_CORE_ERROR("device is null");
             }
 
-            vkDeviceWaitIdle(m_Device.device());  // <-- crashes here right now
+            vkDeviceWaitIdle(device.device());  // <-- crashes here right now
 
             for (auto imageView : swapChainImageViews)
             {
-                vkDestroyImageView(m_Device.device(), imageView, nullptr); // <-- hier auch wenn man das oben weg macht
+                vkDestroyImageView(device.device(), imageView, nullptr); // <-- hier auch wenn man das oben weg macht
             }
             swapChainImageViews.clear();
 
             if (m_Swapchain != nullptr)
             {
-                vkDestroySwapchainKHR(m_Device.device(), m_Swapchain, nullptr);
+                vkDestroySwapchainKHR(device.device(), m_Swapchain, nullptr);
                 m_Swapchain = nullptr;
             }
 
