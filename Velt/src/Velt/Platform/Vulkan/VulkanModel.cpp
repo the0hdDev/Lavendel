@@ -2,7 +2,7 @@
 
 #include "vtpch.h"
 #include "VulkanModel.h"
-
+kj
 namespace Velt::Renderer::Vulkan
 {
 		Model::Model(VulkanDevice& device, const std::vector<Model::Vertex>& vertices) : m_Device{ device }
