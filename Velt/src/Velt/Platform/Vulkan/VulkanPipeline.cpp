@@ -13,26 +13,26 @@ namespace Velt::Renderer::Vulkan {
 		VulkanPipeline::~VulkanPipeline()
 		{
 			VT_PROFILE_FUNCTION();
-
-			vkDeviceWaitIdle(m_Device.device());
-
-			vkDestroyShaderModule(m_Device.device(), fragShaderModule, nullptr);
-			vkDestroyShaderModule(m_Device.device(), vertShaderModule, nullptr);
-			vkDestroyPipeline(m_Device.device(), graphicsVulkanPipeline, nullptr);
+// 
+// 			vkDeviceWaitIdle(m_Device.device());
+// 
+// 			vkDestroyShaderModule(m_Device.device(), fragShaderModule, nullptr);
+// 			vkDestroyShaderModule(m_Device.device(), vertShaderModule, nullptr);
+// 			vkDestroyPipeline(m_Device.device(), graphicsVulkanPipeline, nullptr);
 		}
 
-		VulkanPipeline::VulkanPipeline(VulkanDevice& device, const std::string& vertFilepath, const std::string& fragFilePath, const VulkanPipelineConfigInfo& configInfo) 
-			: m_Device{ device }
+		VulkanPipeline::VulkanPipeline(PipelineSpecification& specs) : m_Specification(specs)
+			
 		{
 			VT_PROFILE_FUNCTION();
 			VT_CORE_INFO("Creating VulkanPipeline...");
-			createGraphicsVulkanPipeline(vertFilepath, fragFilePath, configInfo);
+			Invalidate();
 		}
 
-		void VulkanPipeline::bind(VkCommandBuffer commandBuffer)
+		void VulkanPipeline::Bind(VkCommandBuffer commandBuffer)
 		{
 			VT_PROFILE_FUNCTION();
-			vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsVulkanPipeline);
+			vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, vulkanPipeline);
 		}
 
 		std::vector<char> VulkanPipeline::readFile(const std::string& filepath)
@@ -56,21 +56,22 @@ namespace Velt::Renderer::Vulkan {
 			return buffer;
 		}
 
-		void VulkanPipeline::createGraphicsVulkanPipeline(const std::string& vertShaderPath, const std::string& fragShaderPath, const VulkanPipelineConfigInfo& configInfo)
+		void VulkanPipeline::Invalidate()
 		{
 			VT_PROFILE_FUNCTION();
-			auto vertCode = readFile(vertShaderPath);
-			auto fragCode = readFile(fragShaderPath);
+			auto vertCode = readFile(m_Specification.VertexShaderPath);
+			auto fragCode = readFile(m_Specification.FragmentShaderPath);
 			
-			createShaderModule(vertCode, &vertShaderModule);
-			createShaderModule(fragCode, &fragShaderModule);
+			createShaderModule(vertCode, &vertexShaderModule);
+			createShaderModule(fragCode, &fragmentShaderModule);
 
 			VkPipelineShaderStageCreateInfo shaderStages[2];
+			
 
-			// vert shader stage
+			// Vertex Shader Stage
 			shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 			shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
-			shaderStages[0].module = vertShaderModule;
+			shaderStages[0].module = vertexShaderModule;
 			shaderStages[0].pName = "main";
 			shaderStages[0].flags = 0;
 			shaderStages[0].pNext = nullptr;
@@ -79,14 +80,16 @@ namespace Velt::Renderer::Vulkan {
 			// frag shader stage
 			shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
 			shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
-			shaderStages[1].module = fragShaderModule;
+			shaderStages[1].module = fragmentShaderModule;
 			shaderStages[1].pName = "main";
 			shaderStages[1].flags = 0;
 			shaderStages[1].pNext = nullptr;
 			shaderStages[1].pSpecializationInfo = nullptr;
 
-			auto bindingDescriptions = Model::Vertex::getBindingDescription();
-			auto attributeDescriptions = Model::Vertex::getAttributeDescription();
+			// auto bindingDescriptions = Model::Vertex::getBindingDescription();
+			// auto attributeDescriptions = Model::Vertex::getAttributeDescription();
+
+
 			VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
 
 			vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
