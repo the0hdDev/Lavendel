@@ -18,6 +18,8 @@ namespace Velt::Renderer::Vulkan {
     {
         SwapchainExtent extent;
         bool VSync; 
+        VkInstance Instance; 
+        VulkanDevice Device;
     };
 
 	struct SwapchainCommandBuffer
@@ -99,7 +101,7 @@ namespace Velt::Renderer::Vulkan {
         VkFormat m_SwapChainImageFormat;
 
         VkInstance m_Instance = nullptr;
-        VulkanDevice* m_Device;
+        VulkanDevice& m_Device;
         
         VkFormat m_ColorFormat;
         VkColorSpaceKHR m_ColorSpace;
@@ -110,7 +112,7 @@ namespace Velt::Renderer::Vulkan {
         std::vector<VkFramebuffer> m_Framebuffers;
         VkRenderPass m_RenderPass = nullptr;
 
-        std::vector<DepthStencilImage> m_DepthStencil;
+        std::vector<DepthStencilImage> m_DepthStencilImages;
         std::vector<SwapchainImage> m_SwapchainImages;
       
         VkSwapchainKHR m_Swapchain;

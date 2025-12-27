@@ -18,13 +18,17 @@ namespace Velt::Renderer::Vulkan
 		virtual ~VulkanContext() = default;
 		virtual void Init() override;
 		virtual void Shutdown() override;
-		static VulkanDevice* getDevice() { return s_Device; }
-		static VulkanSwapchain* getSwapchain() { return s_Swapchain; }
-		static VulkanPipeline* getPipeline() { return s_Pipeline; }
-		
+
+		static VulkanDevice* GetDevice() { return s_Device; }
+		static VkInstance GetInstance() { return s_Instance; }
+
 	private:
+
+		inline static VkInstance s_Instance; 
+
 		static VulkanDevice* s_Device;
-		static VulkanSwapchain* s_Swapchain;
-		static VulkanPipeline* s_Pipeline;
+		
+		VulkanSwapchain* s_Swapchain;
+		
 	};
 }
