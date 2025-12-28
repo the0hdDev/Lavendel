@@ -51,7 +51,7 @@ namespace Velt::Renderer::Vulkan {
         VulkanSwapchain(const VulkanSwapchain&) = delete;
         void operator=(const VulkanSwapchain&) = delete;
 
-        void Init(VkInstance instance);
+        void Init(SwapchainCreateInfo& createInfo);
         void InitSurface(SDL_Window* windowHandle);
         void Create(SwapchainCreateInfo& createInfo);
         void Destroy();
@@ -61,10 +61,10 @@ namespace Velt::Renderer::Vulkan {
         void BeginFrame();
         void Present(); 
 
-        inline u32 GetWidth() const { return m_Width; }
-		inline u32 GetHeight() const { return m_Height; }
+        inline u32 GetWidth() const { return m_WindowExtent.width; }
+		inline u32 GetHeight() const { return m_WindowExtent.height; }
         inline u32 GetImageCount() const { return (u32)m_SwapchainImages.size(); } 
-        inline float GetAspectRatio() const { return (float)m_Width / (float)m_Height; }
+        inline float GetAspectRatio() const { return (float)m_WindowExtent.width / (float)m_WindowExtent.height; }
         inline VkRenderPass GetRenderPass() { return m_RenderPass; }
 		inline VkImageView GetImageView(int index) { return m_SwapchainImages[index].ImageView; }
         inline VkFramebuffer GetCurrentFramebuffer() { return GetFrameBuffer(m_CurrentFrameIndex); }
@@ -85,14 +85,7 @@ namespace Velt::Renderer::Vulkan {
         VkFormat findDepthFormat();
         
     private:
-   /*     void createVulkanSwapchain();
-        void createImageViews();
-        void createDepthResources();
-        void createRenderPass();
-        void createFramebuffers();
-        void createSyncObjects();*/
-
-		VkResult AcquireNextImage();
+		u32 AcquireNextImage();
         u32 SubmitCommandBuffers(const VkCommandBuffer* buffers, u32* imageIndex);
 
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
@@ -101,7 +94,7 @@ namespace Velt::Renderer::Vulkan {
         VkFormat m_SwapChainImageFormat;
 
         VkInstance m_Instance = nullptr;
-        VulkanDevice& m_Device;
+        VulkanDevice* m_Device;
         
         VkFormat m_ColorFormat;
         VkColorSpaceKHR m_ColorSpace;
@@ -122,8 +115,8 @@ namespace Velt::Renderer::Vulkan {
         std::vector<VkFence> m_InFlightFences;
         std::vector<VkFence> m_ImagesInFlight;
 
-        u32 m_Width;
-        u32 m_Height;
+        VkExtent2D m_WindowExtent;
+
         bool m_VSync = false; 
         
         u32 m_CurrentImageIndex = 0; // Frame currently displayed
