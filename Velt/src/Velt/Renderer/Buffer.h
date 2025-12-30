@@ -73,6 +73,11 @@ namespace Velt::Renderer
 			void CalculateOffsetAndStride();	
 		};
 
+		BufferLayout()
+		{
+			void CalculateOffsetAndStride(); 
+		};
+
 		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 		u32 GetElementCount() const { return (u32)m_Elements.size(); }
 		u64 getStride() const { return m_Stride; }
