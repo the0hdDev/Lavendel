@@ -7,7 +7,7 @@ namespace Velt::Renderer::Vulkan {
 
 	VulkanPipeline::~VulkanPipeline()
 	{
-		VkDevice device = VulkanContext::GetDevice()->device();
+		VkDevice device = VulkanContext::GetDevice().device();
 		vkDestroyPipeline(device, m_VulkanPipeline, nullptr);
 	}
 
@@ -116,13 +116,13 @@ namespace Velt::Renderer::Vulkan {
 		pipelineInfo.renderPass = m_ConfigInfo.renderPass;
 		pipelineInfo.subpass = m_ConfigInfo.subpass;
 
-		if (vkCreateGraphicsPipelines(VulkanContext::GetDevice()->device(), nullptr, 1, &pipelineInfo, nullptr, &m_VulkanPipeline) != VK_SUCCESS)
+		if (vkCreateGraphicsPipelines(VulkanContext::GetDevice().device(), nullptr, 1, &pipelineInfo, nullptr, &m_VulkanPipeline) != VK_SUCCESS)
 		{
 			VT_CORE_ASSERT(false, "Failed to create Graphics Pipeline")
 		}
 
-		vkDestroyShaderModule(VulkanContext::GetDevice()->device(), vertModule, nullptr);
-		vkDestroyShaderModule(VulkanContext::GetDevice()->device(), fragModule, nullptr);
+		vkDestroyShaderModule(VulkanContext::GetDevice().device(), vertModule, nullptr);
+		vkDestroyShaderModule(VulkanContext::GetDevice().device(), fragModule, nullptr);
 	}
 
 	void VulkanPipeline::Bind(VkCommandBuffer commandBuffer)

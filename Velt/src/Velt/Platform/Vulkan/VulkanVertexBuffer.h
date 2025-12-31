@@ -35,7 +35,7 @@ namespace Velt::Renderer::Vulkan
         void CreateBuffer(const void* data);
 
     private:
-        VulkanDevice* m_Device = VulkanContext::GetDevice();        
+        VulkanDevice& m_Device = VulkanContext::GetDevice();        
 
         VkBuffer m_VertexBuffer = VK_NULL_HANDLE;
         VkDeviceMemory m_VertexBufferMemory = VK_NULL_HANDLE;

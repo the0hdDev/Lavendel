@@ -7,7 +7,7 @@
 namespace Velt::Renderer::Vulkan
 {
 
-    void VulkanSwapchain::Init(SwapchainCreateInfo &createInfo)
+    void VulkanSwapchain::Init(SwapchainCreateInfo& createInfo)
     {
         VT_PROFILE_FUNCTION();
         VT_CORE_TRACE("Swapchain Created");
@@ -19,52 +19,48 @@ namespace Velt::Renderer::Vulkan
     {
         VT_PROFILE_FUNCTION();
 
-        m_Device = VulkanContext::GetDevice();
-
-        if (m_Device->device() == nullptr)
+        if (m_Device.device() == nullptr)
         {
             VT_CORE_ERROR("Device is null");
         }
 
-        vkDeviceWaitIdle(m_Device->device());
+        vkDeviceWaitIdle(m_Device.device());
 
         for (auto image : m_SwapchainImages)
         {
-            vkDestroyImageView(m_Device->device(), image.ImageView, nullptr);
+            vkDestroyImageView(m_Device.device(), image.ImageView, nullptr);
         }
         m_SwapchainImages.clear();
 
         if (m_Swapchain != nullptr)
         {
-            vkDestroySwapchainKHR(m_Device->device(), m_Swapchain, nullptr);
+            vkDestroySwapchainKHR(m_Device.device(), m_Swapchain, nullptr);
             m_Swapchain = nullptr;
         }
 
         for (auto depthStencilImage : m_DepthStencilImages)
         {
-            vkDestroyImageView(m_Device->device(), depthStencilImage.DepthImageView, nullptr);
-            vkDestroyImage(m_Device->device(), depthStencilImage.DepthImage, nullptr);
-            vkFreeMemory(m_Device->device(), depthStencilImage.DepthImageMemory, nullptr);
+            vkDestroyImageView(m_Device.device(), depthStencilImage.DepthImageView, nullptr);
+            vkDestroyImage(m_Device.device(), depthStencilImage.DepthImage, nullptr);
+            vkFreeMemory(m_Device.device(), depthStencilImage.DepthImageMemory, nullptr);
         }
 
         for (auto framebuffer : m_Framebuffers)
         {
-            vkDestroyFramebuffer(m_Device->device(), framebuffer, nullptr);
+            vkDestroyFramebuffer(m_Device.device(), framebuffer, nullptr);
         }
 
-        vkDestroyRenderPass(m_Device->device(), m_RenderPass, nullptr);
+        vkDestroyRenderPass(m_Device.device(), m_RenderPass, nullptr);
 
-        // Destroy semaphores - one per swapchain image
         for (size_t i = 0; i < m_ImageAvailableSemaphores.size(); i++)
         {
-            vkDestroySemaphore(m_Device->device(), m_RenderFinishedSemaphores[i], nullptr);
-            vkDestroySemaphore(m_Device->device(), m_ImageAvailableSemaphores[i], nullptr);
+            vkDestroySemaphore(m_Device.device(), m_RenderFinishedSemaphores[i], nullptr);
+            vkDestroySemaphore(m_Device.device(), m_ImageAvailableSemaphores[i], nullptr);
         }
 
-        // Destroy fences - one per frame in flight
         for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
         {
-            vkDestroyFence(m_Device->device(), m_InFlightFences[i], nullptr);
+            vkDestroyFence(m_Device.device(), m_InFlightFences[i], nullptr);
         }
     }
 
@@ -72,15 +68,14 @@ namespace Velt::Renderer::Vulkan
     {
         VT_PROFILE_FUNCTION();
         vkWaitForFences(
-            m_Device->device(),
+            m_Device.device(),
             1,
             &m_InFlightFences[m_CurrentFrameIndex],
             VK_TRUE,
             std::numeric_limits<uint64_t>::max());
 
-        // Use currentFrame semaphore, imageIndex will be filled by vkAcquireNextImageKHR
         VkResult result = vkAcquireNextImageKHR(
-            m_Device->device(),
+            m_Device.device(),
             m_Swapchain,
             std::numeric_limits<uint64_t>::max(),
             m_ImageAvailableSemaphores[m_CurrentFrameIndex],
@@ -91,19 +86,19 @@ namespace Velt::Renderer::Vulkan
     }
 
     u32 VulkanSwapchain::SubmitCommandBuffers(
-        const VkCommandBuffer *buffers, u32 *imageIndex)
+        const VkCommandBuffer* buffers, u32* imageIndex)
     {
         VT_PROFILE_FUNCTION();
         if (m_ImagesInFlight[*imageIndex] != VK_NULL_HANDLE)
         {
-            vkWaitForFences(m_Device->device(), 1, &m_ImagesInFlight[*imageIndex], VK_TRUE, UINT64_MAX);
+            vkWaitForFences(m_Device.device(), 1, &m_ImagesInFlight[*imageIndex], VK_TRUE, UINT64_MAX);
         }
         m_ImagesInFlight[*imageIndex] = m_InFlightFences[m_CurrentFrameIndex];
         VkSubmitInfo submitInfo = {};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
-        VkSemaphore waitSemaphores[] = {m_ImageAvailableSemaphores[m_CurrentFrameIndex]};
-        VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        VkSemaphore waitSemaphores[] = { m_ImageAvailableSemaphores[m_CurrentFrameIndex] };
+        VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
         submitInfo.waitSemaphoreCount = 1;
         submitInfo.pWaitSemaphores = waitSemaphores;
         submitInfo.pWaitDstStageMask = waitStages;
@@ -111,12 +106,12 @@ namespace Velt::Renderer::Vulkan
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = buffers;
 
-        VkSemaphore signalSemaphores[] = {m_RenderFinishedSemaphores[m_CurrentFrameIndex]};
+        VkSemaphore signalSemaphores[] = { m_RenderFinishedSemaphores[m_CurrentFrameIndex] };
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores;
 
-        vkResetFences(m_Device->device(), 1, &m_InFlightFences[m_CurrentFrameIndex]);
-        if (vkQueueSubmit(m_Device->graphicsQueue(), 1, &submitInfo, m_InFlightFences[m_CurrentFrameIndex]) != VK_SUCCESS)
+        vkResetFences(m_Device.device(), 1, &m_InFlightFences[m_CurrentFrameIndex]);
+        if (vkQueueSubmit(m_Device.graphicsQueue(), 1, &submitInfo, m_InFlightFences[m_CurrentFrameIndex]) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to submit draw command buffer!");
         }
@@ -126,25 +121,25 @@ namespace Velt::Renderer::Vulkan
         presentInfo.waitSemaphoreCount = 1;
         presentInfo.pWaitSemaphores = signalSemaphores;
 
-        VkSwapchainKHR swapChains[] = {m_Swapchain};
+        VkSwapchainKHR swapChains[] = { m_Swapchain };
         presentInfo.swapchainCount = 1;
         presentInfo.pSwapchains = swapChains;
         presentInfo.pImageIndices = imageIndex;
 
-        auto result = vkQueuePresentKHR(m_Device->presentQueue(), &presentInfo);
+        auto result = vkQueuePresentKHR(m_Device.presentQueue(), &presentInfo);
 
-        vkQueueWaitIdle(m_Device->presentQueue());
+        vkQueueWaitIdle(m_Device.presentQueue());
 
         m_CurrentFrameIndex = (m_CurrentFrameIndex + 1) % MAX_FRAMES_IN_FLIGHT;
 
         return result;
     }
 
-    void VulkanSwapchain::Create(SwapchainCreateInfo &createInfo)
+    void VulkanSwapchain::Create(SwapchainCreateInfo& createInfo)
     {
         VT_PROFILE_FUNCTION();
         VT_PROFILE_FUNCTION();
-        SwapChainSupportDetails swapChainSupport = m_Device->GetSwapChainSupport();
+        SwapChainSupportDetails swapChainSupport = m_Device.GetSwapChainSupport();
 
         VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
         VkPresentModeKHR presentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
@@ -159,7 +154,7 @@ namespace Velt::Renderer::Vulkan
 
         VkSwapchainCreateInfoKHR createInfoVk = {};
         createInfoVk.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfoVk.surface = m_Device->surface();
+        createInfoVk.surface = m_Device.surface();
 
         createInfoVk.minImageCount = imageCount;
         createInfoVk.imageFormat = surfaceFormat.format;
@@ -168,8 +163,8 @@ namespace Velt::Renderer::Vulkan
         createInfoVk.imageArrayLayers = 1;
         createInfoVk.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-        QueueFamilyIndices indices = m_Device->FindPhysicalQueueFamilies();
-        u32 queueFamilyIndices[] = {indices.graphicsFamily, indices.presentFamily};
+        QueueFamilyIndices indices = m_Device.FindPhysicalQueueFamilies();
+        u32 queueFamilyIndices[] = { indices.graphicsFamily, indices.presentFamily };
 
         if (indices.graphicsFamily != indices.presentFamily)
         {
@@ -192,14 +187,21 @@ namespace Velt::Renderer::Vulkan
 
         createInfoVk.oldSwapchain = VK_NULL_HANDLE;
 
-        if (vkCreateSwapchainKHR(m_Device->device(), &createInfoVk, nullptr, &m_Swapchain) != VK_SUCCESS)
+        if (vkCreateSwapchainKHR(m_Device.device(), &createInfoVk, nullptr, &m_Swapchain) != VK_SUCCESS)
         {
             VT_CORE_ERROR("Failed to create swapchain!");
         }
 
-        vkGetSwapchainImagesKHR(m_Device->device(), m_Swapchain, &imageCount, nullptr);
+        vkGetSwapchainImagesKHR(m_Device.device(), m_Swapchain, &imageCount, nullptr);
         m_SwapchainImages.resize(imageCount);
-        vkGetSwapchainImagesKHR(m_Device->device(), m_Swapchain, &imageCount, &m_SwapchainImages.data()->Image);
+
+        std::vector<VkImage> images(imageCount);
+        vkGetSwapchainImagesKHR(m_Device.device(), m_Swapchain, &imageCount, images.data());
+
+        for (size_t i = 0; i < imageCount; i++)
+        {
+            m_SwapchainImages[i].Image = images[i];
+        }
 
         m_SwapChainImageFormat = surfaceFormat.format;
         m_WindowExtent = extent;
@@ -217,10 +219,10 @@ namespace Velt::Renderer::Vulkan
             viewInfo.subresourceRange.baseArrayLayer = 0;
             viewInfo.subresourceRange.layerCount = 1;
 
-            if (vkCreateImageView(m_Device->device(), &viewInfo, nullptr, &m_SwapchainImages[i].ImageView) !=
+            if (vkCreateImageView(m_Device.device(), &viewInfo, nullptr, &m_SwapchainImages[i].ImageView) !=
                 VK_SUCCESS)
             {
-                throw std::runtime_error("failed to create texture image view!");
+                VT_CORE_ASSERT(false, "Failed to create Image View.");
             }
         }
 
@@ -270,7 +272,7 @@ namespace Velt::Renderer::Vulkan
         dependency.dstAccessMask =
             VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
 
-        std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
+        std::array<VkAttachmentDescription, 2> attachments = { colorAttachment, depthAttachment };
         VkRenderPassCreateInfo renderPassInfo = {};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         renderPassInfo.attachmentCount = static_cast<u32>(attachments.size());
@@ -280,35 +282,9 @@ namespace Velt::Renderer::Vulkan
         renderPassInfo.dependencyCount = 1;
         renderPassInfo.pDependencies = &dependency;
 
-        if (vkCreateRenderPass(m_Device->device(), &renderPassInfo, nullptr, &m_RenderPass) != VK_SUCCESS)
+        if (vkCreateRenderPass(m_Device.device(), &renderPassInfo, nullptr, &m_RenderPass) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create render pass!");
-        }
-
-        // Create framebuffers
-        m_Framebuffers.resize(imageCount);
-        for (size_t i = 0; i < imageCount; i++)
-        {
-            std::array<VkImageView, 2> attachments = {m_SwapchainImages[i].ImageView, m_DepthStencilImages[i].DepthImageView};
-
-            VkExtent2D swapChainExtent = m_WindowExtent;
-            VkFramebufferCreateInfo framebufferInfo = {};
-            framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-            framebufferInfo.renderPass = m_RenderPass;
-            framebufferInfo.attachmentCount = static_cast<u32>(attachments.size());
-            framebufferInfo.pAttachments = attachments.data();
-            framebufferInfo.width = swapChainExtent.width;
-            framebufferInfo.height = swapChainExtent.height;
-            framebufferInfo.layers = 1;
-
-            if (vkCreateFramebuffer(
-                    m_Device->device(),
-                    &framebufferInfo,
-                    nullptr,
-                    &m_Framebuffers[i]) != VK_SUCCESS)
-            {
-                throw std::runtime_error("failed to create framebuffer!");
-            }
         }
 
         // Create depth resources
@@ -335,7 +311,7 @@ namespace Velt::Renderer::Vulkan
             imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
             imageInfo.flags = 0;
 
-            m_Device->createImageWithInfo(
+            m_Device.createImageWithInfo(
                 imageInfo,
                 VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
                 m_DepthStencilImages[i].DepthImage,
@@ -352,9 +328,35 @@ namespace Velt::Renderer::Vulkan
             viewInfo.subresourceRange.baseArrayLayer = 0;
             viewInfo.subresourceRange.layerCount = 1;
 
-            if (vkCreateImageView(m_Device->device(), &viewInfo, nullptr, &m_DepthStencilImages[i].DepthImageView) != VK_SUCCESS)
+            if (vkCreateImageView(m_Device.device(), &viewInfo, nullptr, &m_DepthStencilImages[i].DepthImageView) != VK_SUCCESS)
             {
                 throw std::runtime_error("failed to create texture image view!");
+            }
+        }
+
+        // Create framebuffers
+        m_Framebuffers.resize(imageCount);
+        for (size_t i = 0; i < imageCount; i++)
+        {
+            std::array<VkImageView, 2> attachments = { m_SwapchainImages[i].ImageView, m_DepthStencilImages[i].DepthImageView };
+
+            VkExtent2D swapChainExtent = m_WindowExtent;
+            VkFramebufferCreateInfo framebufferInfo = {};
+            framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            framebufferInfo.renderPass = m_RenderPass;
+            framebufferInfo.attachmentCount = static_cast<u32>(attachments.size());
+            framebufferInfo.pAttachments = attachments.data();
+            framebufferInfo.width = swapChainExtent.width;
+            framebufferInfo.height = swapChainExtent.height;
+            framebufferInfo.layers = 1;
+
+            if (vkCreateFramebuffer(
+                m_Device.device(),
+                &framebufferInfo,
+                nullptr,
+                &m_Framebuffers[i]) != VK_SUCCESS)
+            {
+                throw std::runtime_error("failed to create framebuffer!");
             }
         }
 
@@ -373,11 +375,11 @@ namespace Velt::Renderer::Vulkan
         // Create semaphores for each frame in flight
         for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
         {
-            if (vkCreateSemaphore(m_Device->device(), &semaphoreInfo, nullptr, &m_ImageAvailableSemaphores[i]) !=
-                    VK_SUCCESS ||
-                vkCreateSemaphore(m_Device->device(), &semaphoreInfo, nullptr, &m_RenderFinishedSemaphores[i]) !=
-                    VK_SUCCESS ||
-                vkCreateFence(m_Device->device(), &fenceInfo, nullptr, &m_InFlightFences[i]) != VK_SUCCESS)
+            if (vkCreateSemaphore(m_Device.device(), &semaphoreInfo, nullptr, &m_ImageAvailableSemaphores[i]) !=
+                VK_SUCCESS ||
+                vkCreateSemaphore(m_Device.device(), &semaphoreInfo, nullptr, &m_RenderFinishedSemaphores[i]) !=
+                VK_SUCCESS ||
+                vkCreateFence(m_Device.device(), &fenceInfo, nullptr, &m_InFlightFences[i]) != VK_SUCCESS)
             {
                 throw std::runtime_error("failed to create synchronization objects for a frame!");
             }
@@ -385,10 +387,10 @@ namespace Velt::Renderer::Vulkan
     }
 
     VkSurfaceFormatKHR VulkanSwapchain::chooseSwapSurfaceFormat(
-        const std::vector<VkSurfaceFormatKHR> &availableFormats)
+        const std::vector<VkSurfaceFormatKHR>& availableFormats)
     {
         VT_PROFILE_FUNCTION();
-        for (const auto &availableFormat : availableFormats)
+        for (const auto& availableFormat : availableFormats)
         {
             if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
                 availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
@@ -401,7 +403,7 @@ namespace Velt::Renderer::Vulkan
     }
 
     VkPresentModeKHR VulkanSwapchain::chooseSwapPresentMode(
-        const std::vector<VkPresentModeKHR> &availablePresentModes)
+        const std::vector<VkPresentModeKHR>& availablePresentModes)
     {
         VT_PROFILE_FUNCTION();
         /*for (const auto& availablePresentMode : availablePresentModes)
@@ -417,7 +419,7 @@ namespace Velt::Renderer::Vulkan
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 
-    VkExtent2D VulkanSwapchain::chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities)
+    VkExtent2D VulkanSwapchain::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities)
     {
         VT_PROFILE_FUNCTION();
 
@@ -442,8 +444,8 @@ namespace Velt::Renderer::Vulkan
     VkFormat VulkanSwapchain::findDepthFormat()
     {
         VT_PROFILE_FUNCTION();
-        return m_Device->FindSupportedFormat(
-            {VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT},
+        return m_Device.FindSupportedFormat(
+            { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
             VK_IMAGE_TILING_OPTIMAL,
             VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
     }
@@ -452,23 +454,15 @@ namespace Velt::Renderer::Vulkan
     {
         VT_PROFILE_FUNCTION();
         u32 imageIndex = m_CurrentImageIndex;
-        VkCommandBuffer commandBuffers[] = {GetDrawCommandBuffer(m_CurrentFrameIndex)};
+        VkCommandBuffer commandBuffers[] = { GetDrawCommandBuffer(m_CurrentFrameIndex) };
 
         SubmitCommandBuffers(commandBuffers, &imageIndex);
     };
 
-    void VulkanSwapchain::InitSurface(SDL_Window *windowHandle)
+    void VulkanSwapchain::InitSurface(SDL_Window* windowHandle)
     {
-        VkPhysicalDevice physicalDevice = m_Device->GetPhysicalDevice();
+        VkPhysicalDevice physicalDevice = m_Device.GetPhysicalDevice();
 
-        // Create surface using SDL instead of GLFW
-        if (!SDL_Vulkan_CreateSurface(windowHandle, m_Instance, nullptr, &m_Surface))
-        {
-            VT_CORE_ASSERT(false, "Failed to create SDL Vulkan surface:  {0}", SDL_GetError());
-            return;
-        }
-
-        // Get available queue family properties
         u32 queueCount;
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueCount, nullptr);
         VT_CORE_ASSERT(queueCount >= 1, "No queue families found!");
@@ -476,7 +470,7 @@ namespace Velt::Renderer::Vulkan
         std::vector<VkQueueFamilyProperties> queueProps(queueCount);
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueCount, queueProps.data());
 
-        // Iterate over each queue to learn whether it supports presenting:
+        // Iterate over each queue to learn whether it supports presenting: 
         // Find a queue with present support
         // Will be used to present the swap chain images to the windowing system
         std::vector<VkBool32> supportsPresent(queueCount);
@@ -531,52 +525,57 @@ namespace Velt::Renderer::Vulkan
     }
 
 
-    // credit to the hazel engine (stole this function (: )
+    // credit to the hazel engine (stole this function (:  )
 
     void VulkanSwapchain::FindImageFormatAndColorSpace()
-	{
-		VkPhysicalDevice physicalDevice = m_Device->GetPhysicalDevice();
+    {
+        VkPhysicalDevice physicalDevice = m_Device.GetPhysicalDevice();
 
-		// Get list of supported surface formats
-		uint32_t formatCount;
-		vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_Surface, &formatCount, NULL);
-		VT_CORE_ASSERT(formatCount > 0, "No surface formats found.");
+        // Get list of supported surface formats
+        uint32_t formatCount;
+        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_Surface, &formatCount, NULL);
+        VT_CORE_ASSERT(formatCount > 0, "No surface formats found.");
 
-		std::vector<VkSurfaceFormatKHR> surfaceFormats(formatCount);
-		vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_Surface, &formatCount, surfaceFormats.data());
+        std::vector<VkSurfaceFormatKHR> surfaceFormats(formatCount);
+        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice, m_Surface, &formatCount, surfaceFormats.data());
 
-		// If the surface format list only includes one entry with VK_FORMAT_UNDEFINED,
-		// there is no preferered format, so we assume VK_FORMAT_B8G8R8A8_UNORM
-		if ((formatCount == 1) && (surfaceFormats[0].format == VK_FORMAT_UNDEFINED))
-		{
-			m_ColorFormat = VK_FORMAT_B8G8R8A8_UNORM;
-			m_ColorSpace = surfaceFormats[0].colorSpace;
-		}
-		else
-		{
-			// iterate over the list of available surface format and
-			// check for the presence of VK_FORMAT_B8G8R8A8_UNORM
-			bool found_B8G8R8A8_UNORM = false;
-			for (auto&& surfaceFormat : surfaceFormats)
-			{
-				if (surfaceFormat.format == VK_FORMAT_B8G8R8A8_UNORM)
-				{
-					m_ColorFormat = surfaceFormat.format;
-					m_ColorSpace = surfaceFormat.colorSpace;
-					found_B8G8R8A8_UNORM = true;
-					break;
-				}
-			}
+        // If the surface format list only includes one entry with VK_FORMAT_UNDEFINED,
+        // there is no preferered format, so we assume VK_FORMAT_B8G8R8A8_UNORM
+        if ((formatCount == 1) && (surfaceFormats[0].format == VK_FORMAT_UNDEFINED))
+        {
+            m_ColorFormat = VK_FORMAT_B8G8R8A8_UNORM;
+            m_ColorSpace = surfaceFormats[0].colorSpace;
+        }
+        else
+        {
+            // iterate over the list of available surface format and
+            // check for the presence of VK_FORMAT_B8G8R8A8_UNORM
+            bool found_B8G8R8A8_UNORM = false;
+            for (auto&& surfaceFormat : surfaceFormats)
+            {
+                if (surfaceFormat.format == VK_FORMAT_B8G8R8A8_UNORM)
+                {
+                    m_ColorFormat = surfaceFormat.format;
+                    m_ColorSpace = surfaceFormat.colorSpace;
+                    found_B8G8R8A8_UNORM = true;
+                    break;
+                }
+            }
 
-			// in case VK_FORMAT_B8G8R8A8_UNORM is not available
-			// select the first available color format
-			if (!found_B8G8R8A8_UNORM)
-			{
-				m_ColorFormat = surfaceFormats[0].format;
-				m_ColorSpace = surfaceFormats[0].colorSpace;
-			}
-		}
+            // in case VK_FORMAT_B8G8R8A8_UNORM is not available
+            // select the first available color format
+            if (!found_B8G8R8A8_UNORM)
+            {
+                m_ColorFormat = surfaceFormats[0].format;
+                m_ColorSpace = surfaceFormats[0].colorSpace;
+            }
+        }
 
-	}
+    }
+
+    VulkanSwapchain::VulkanSwapchain() : m_Device(VulkanContext::GetDevice()), m_Instance(VulkanContext::GetInstance()), m_Surface(VulkanContext::GetSurface())
+    {
+
+    }
 
 }

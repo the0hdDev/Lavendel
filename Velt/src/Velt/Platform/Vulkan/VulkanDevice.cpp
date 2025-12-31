@@ -15,7 +15,7 @@ namespace Velt::Renderer::Vulkan
     VulkanDevice::VulkanDevice() : m_Instance(VulkanContext::GetInstance()), m_Surface(VulkanContext::GetSurface())
     {
         VT_PROFILE_FUNCTION();
-        VT_CORE_INFO("Creating VulkanDevice...");
+        VT_CORE_TRACE("Creating VulkanDevice...");
 
        
 

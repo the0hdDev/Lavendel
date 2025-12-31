@@ -20,7 +20,7 @@ namespace Velt::Renderer::Vulkan
 		virtual void Shutdown() override;
 
 		void CreateInstance();
-		static VulkanDevice* GetDevice() { return m_Device; }
+		static VulkanDevice& GetDevice() { return *m_Device; }
 		static VkInstance& GetInstance() { return m_Instance; }
 		static VkSurfaceKHR& GetSurface() { return m_Surface; }
 

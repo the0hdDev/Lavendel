@@ -44,7 +44,7 @@ namespace Velt::Renderer::Vulkan
 		VT_PROFILE_FUNCTION();
 		VT_CORE_TRACE("Initializing Vulkan Context");
 
-		auto window = Application::Get().GetWindow();
+		auto& window = Application::Get().GetWindow();
 
 		CreateInstance();
 		SetupDebugMessenger();
@@ -56,7 +56,8 @@ namespace Velt::Renderer::Vulkan
 		SwapchainCreateInfo createInfo;
 
 		createInfo.VSync = true; 
-		createInfo.Width = 
+		createInfo.Width = window.getWidth();
+		createInfo.Height = window.getHeight(); 
 
 		m_Swapchain->Init(createInfo);
 	}

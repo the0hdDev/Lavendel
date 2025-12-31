@@ -4,13 +4,13 @@
 
 namespace Velt::Renderer
 {
-	Velt::Ref<Velt::Renderer::Pipeline> Velt::Renderer::Pipeline::Create(const PipelineSpecification& spec)
+	Pipeline* Velt::Renderer::Pipeline::Create(const PipelineSpecification& spec)
 	{
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::None:    return nullptr;
-			case RendererAPI::Vulkan:  return std::make_shared<Vulkan::VulkanPipeline>(spec);
+			case RendererAPI::Vulkan:  return new Vulkan::VulkanPipeline(spec);
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;

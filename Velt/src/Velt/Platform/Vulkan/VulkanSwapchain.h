@@ -45,7 +45,7 @@ namespace Velt::Renderer::Vulkan {
     public:
         static constexpr int MAX_FRAMES_IN_FLIGHT = 3;
 
-        VulkanSwapchain() = default;
+        VulkanSwapchain();
 
         VulkanSwapchain(const VulkanSwapchain&) = delete;
         void operator=(const VulkanSwapchain&) = delete;
@@ -93,13 +93,14 @@ namespace Velt::Renderer::Vulkan {
         void FindImageFormatAndColorSpace();
         VkFormat m_SwapChainImageFormat;
 
-        VkInstance m_Instance = nullptr;
-        VulkanDevice* m_Device;
-        
+        VkInstance& m_Instance;
+        VulkanDevice& m_Device;
+		VkSurfaceKHR& m_Surface;
+        VkSwapchainKHR m_Swapchain;
+
         VkFormat m_ColorFormat;
         VkColorSpaceKHR m_ColorSpace;
 
-        VkSurfaceKHR m_Surface; 
 
 		std::vector<SwapchainCommandBuffer> m_Commandbuffers;
 
@@ -107,10 +108,8 @@ namespace Velt::Renderer::Vulkan {
         VkRenderPass m_RenderPass = nullptr;
 
         std::vector<DepthStencilImage> m_DepthStencilImages;
-        std::vector<SwapchainImage> m_SwapchainImages;
-      
-        VkSwapchainKHR m_Swapchain;
-        
+        std::vector<SwapchainImage> m_SwapchainImages; 
+
         std::vector<VkSemaphore> m_ImageAvailableSemaphores;
         std::vector<VkSemaphore> m_RenderFinishedSemaphores;
         std::vector<VkFence> m_InFlightFences;
