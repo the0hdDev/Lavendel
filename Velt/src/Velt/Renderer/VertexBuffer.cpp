@@ -1,8 +1,9 @@
 #include "vtpch.h"
 #include "VertexBuffer.h"
-#include "RendererAPI.h"
+#include "RenderAPI.h"
 #include "Platform/Vulkan/VulkanVertexBuffer.h"
 #include "Velt/Renderer/Renderer.h"
+#include "RenderAPI.h"
 
 namespace Velt::Renderer
 {
@@ -12,8 +13,8 @@ namespace Velt::Renderer
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:    return nullptr;
-			case RendererAPI::Vulkan:  return std::make_shared<Vulkan::VulkanVertexBuffer>(vertexData, vertexCount, vertexStride);
+			case RenderAPI::API::None:    return nullptr;
+			case RenderAPI::API::Vulkan:  return std::make_shared<Vulkan::VulkanVertexBuffer>(vertexData, vertexCount, vertexStride);
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;

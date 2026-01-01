@@ -1,6 +1,7 @@
 #include "RenderContext.h"
 #include "Renderer.h"
 #include "Platform/Vulkan/VulkanContext.h"
+#include "RenderAPI.h"
 
 namespace Velt::Renderer
 {
@@ -10,8 +11,8 @@ namespace Velt::Renderer
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:    return nullptr;
-		case RendererAPI::Vulkan:  return new Vulkan::VulkanContext;
+		case RenderAPI::API::None:    return nullptr;
+		case RenderAPI::API::Vulkan:  return new Vulkan::VulkanContext;
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;

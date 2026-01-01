@@ -41,8 +41,6 @@ add_library(Velt SHARED
         "src/Velt/Renderer/RenderContext.h"
         "src/Velt/Renderer/RenderContext.cpp"
         "src/Velt/Renderer/RendererAPI.h"
-        "src/Velt/Renderer/Model.h" 
-        "src/Velt/Renderer/Model.cpp"
         "src/Velt/Renderer/Pipeline.h"
         "src/Velt/Renderer/Pipeline.cpp"  
         "src/Velt/Platform/Vulkan/VulkanRenderer.h" 

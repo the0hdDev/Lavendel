@@ -130,7 +130,6 @@ namespace Velt::Renderer::Vulkan
 		VT_PROFILE_FUNCTION();
 		if (m_EnableValidationLayers && !CheckValidationLayerSupport())
 		{
-			throw std::runtime_error("validation layers requested, but not available!");
 			VT_CORE_ERROR("Validation layers requested, but not available!");
 		}
 

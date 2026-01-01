@@ -24,7 +24,7 @@ public:
 		VT_PROFILE_FUNCTION();
 		//VT_CORE_INFO("ExampleLayer::OnRender");
 
-		ImGui::Begin("Hello from ExampleLayer");
+		// ImGui::Begin("Hello from ExampleLayer");
 
 	}
 };

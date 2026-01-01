@@ -2,6 +2,7 @@
 #include "IndexBuffer.h"
 #include "Velt/Platform/Vulkan/VulkanIndexBuffer.h"
 #include "Renderer.h"
+#include "RenderAPI.h"
 #include <memory>
 
 namespace Velt::Renderer
@@ -13,8 +14,8 @@ namespace Velt::Renderer
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:    return nullptr;
-		case RendererAPI::Vulkan:  return std::make_shared<Vulkan::VulkanIndexBuffer>(size);
+		case RenderAPI::API::None:    return nullptr;
+		case RenderAPI::API::Vulkan:  return std::make_shared<Vulkan::VulkanIndexBuffer>(size);
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
@@ -25,8 +26,8 @@ namespace Velt::Renderer
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None:    return nullptr;
-		case RendererAPI::Vulkan:  return std::make_shared<Vulkan::VulkanIndexBuffer>(data, size);
+		case RenderAPI::API::None:    return nullptr;
+		case RenderAPI::API::Vulkan:  return std::make_shared<Vulkan::VulkanIndexBuffer>(data, size);
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;

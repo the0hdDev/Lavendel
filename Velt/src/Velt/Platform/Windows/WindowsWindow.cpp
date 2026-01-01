@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include "Velt/Renderer/Renderer.h"
+#include "Renderer/RenderAPI.h"
 
 namespace Velt 
 {
@@ -111,7 +112,7 @@ namespace Velt::Windows
 
 		switch (Renderer::Renderer::GetAPI())
 		{
-		case Renderer::RendererAPI::Vulkan:
+		case Renderer::RenderAPI::API::Vulkan:
 			if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), static_cast<VkInstance>(instance), nullptr, static_cast<VkSurfaceKHR*>(surface)))
 			{
 				VT_CORE_ERROR("Failed to create window surface: {}", SDL_GetError());

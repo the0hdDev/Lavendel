@@ -9,7 +9,6 @@
 
 namespace Velt::Renderer {
 
-	RendererAPI Renderer::s_API = RendererAPI::Vulkan;
 
 	struct SimplePushConstantData
 	{
@@ -35,10 +34,6 @@ namespace Velt::Renderer {
 
 	}
 
-	void Renderer::drawFrame()
-	{
-
-	}
 
 	void Renderer::setLayerStack(LayerStack* layerStack)
 	{

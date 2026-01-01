@@ -1,6 +1,7 @@
 #include "Pipeline.h"
 #include "Platform/Vulkan/VulkanPipeline.h"
 #include "Renderer.h"
+#include "RenderAPI.h"
 
 namespace Velt::Renderer
 {
@@ -9,8 +10,8 @@ namespace Velt::Renderer
 		VT_PROFILE_FUNCTION();
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::None:    return nullptr;
-			case RendererAPI::Vulkan:  return new Vulkan::VulkanPipeline(spec);
+			case RenderAPI::API::None:    return nullptr;
+			case RenderAPI::API::Vulkan:  return new Vulkan::VulkanPipeline(spec);
 		}
 		VT_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
