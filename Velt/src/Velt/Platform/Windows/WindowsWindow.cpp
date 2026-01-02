@@ -3,6 +3,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include "Velt/Renderer/Renderer.h"
+#include "Velt/Platform/Vulkan/VulkanSwapchain.h"
+#include "Velt/Platform/Vulkan/VulkanContext.h"
 #include "Renderer/RenderAPI.h"
 
 namespace Velt 
@@ -77,6 +79,20 @@ namespace Velt::Windows
 
 		SDL_PropertiesID sdlProps = SDL_GetWindowProperties(m_Window);
 		SDL_SetPointerProperty(sdlProps, "WindowInstance", this);
+
+		m_Context = std::make_unique<Renderer::Context>(Renderer::Context::Create());
+		
+		m_Swapchain = new Renderer::Vulkan::VulkanSwapchain();
+
+		Renderer::Vulkan::SwapchainCreateInfo createInfo{};
+
+		createInfo.Height = m_Data.m_Height;
+		createInfo.Width = m_Data.m_Width;
+		createInfo.VSync =  m_Data.m_bVsync;
+
+		m_Swapchain->Init(createInfo);
+		m_Swapchain->InitSurface(m_Window);
+
 	}
 
 	void WindowsWindow::Shutdown()

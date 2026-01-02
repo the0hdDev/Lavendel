@@ -1,6 +1,8 @@
 #pragma once
 #include "vtpch.h"
 #include "RenderCommandBuffer.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "RenderAPI.h"
 
 namespace Velt::Renderer
@@ -16,21 +18,17 @@ namespace Velt::Renderer
 		Renderer();
 		~Renderer();
 
-		// virtual void setImGuiLayer(ImGuiLayer* layer) = 0;
-		virtual void setLayerStack(LayerStack* layerStack) = 0;
-		
-		static void requestShutdown();
-		static void Shutdown();
+		static void BeginScene();
+		static void EndScene();
 
-		static void BeginRenderPass(Ref<VkCommandBuffer> renderCommandbuffer, Ref<VkRenderPass> renderPass, bool explicitClear = false);
-		static void EndRenderPass(Ref<VkCommandBuffer> renderCommandbuffer);
+		static void Submit(const std::shared_ptr<VertexBuffer>& vertexBuffer, const std::shared_ptr<IndexBuffer>& indexBuffer);
+
+		static void RequestShutdown();
+		static void Shutdown();
 
 		inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); };
 
 	private:
-		virtual void loadModels() = 0;
-		virtual void createPipelineLayout() = 0;
-		virtual void createPipeline() = 0;
 
 
 	};

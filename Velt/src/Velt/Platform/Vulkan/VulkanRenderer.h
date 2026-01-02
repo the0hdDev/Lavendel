@@ -1,27 +1,13 @@
 #include "vtpch.h"
+#include "RenderAPI.h"
 #include "Velt/Renderer/Renderer.h"
 
 namespace Velt::Renderer::Vulkan
 {
-	class VELT_API VulkanRenderer
+	class VELT_API VulkanRenderer : public RenderAPI
 	{
 	public:
-		
-
-
-		// void drawFrame() override;
-		// void renderImGui(VkCommandBuffer commandBuffer);
-
-
-		// static void requestShutdown();
-		// static void Shutdown();
-
-		//virtual void setImGuiLayer(ImGuiLayer* layer) override { m_ImGuiLayer = layer; }
-		//virtual void setLayerStack(LayerStack* layerStack) override { m_LayerStack = layerStack; }
-
-		//inline static VulkanDevice* getDevice() { return m_Device; }
-		//inline static SwapChain* getSwapChain() { return m_SwapChain; }
-		//inline static Pipeline* getPipeline() { return m_Pipeline; }
+		virtual void WaitAndRender() override;
 
 	private:
 		//void loadModels();

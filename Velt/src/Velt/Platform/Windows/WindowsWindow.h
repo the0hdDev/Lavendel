@@ -1,6 +1,8 @@
 #pragma once
 #include "Core/Window.h"
 #include "Core/Application.h"
+#include "Platform/Vulkan/VulkanSwapchain.h"
+#include "Renderer/RenderContext.h"
 #include <SDL3/SDL.h>
 
 namespace Velt::Windows 
@@ -21,11 +23,15 @@ namespace Velt::Windows
 		void setVsync(bool enable) override;
 		void setResizable(bool enable) override;
 		void* GetNativeHandle() const override;
+		Renderer::Vulkan::VulkanSwapchain& GetSwapchain(); 
 
 		void CreateWindowSurface(void* instance, void* surface);
-		VkExtent2D getExtent() const {	return { Application::Get().GetWindow().getWidth(), Application::Get().GetWindow().getHeight() };	}
+		VkExtent2D GetExtent() const {	return { Application::Get().GetWindow().getWidth(), Application::Get().GetWindow().getHeight() };	}
+
 	private:
 		SDL_Window* m_Window = nullptr;
+		Renderer::Vulkan::VulkanSwapchain* m_Swapchain; 
+		std::unique_ptr<Renderer::Context> m_Context;
 		
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();

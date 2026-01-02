@@ -39,7 +39,6 @@ namespace Velt
 
 	private:
 		static Application* s_Instance;
-		std::unique_ptr<Renderer::Context> m_Context;
 		WindowProps m_WindowProps;
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
