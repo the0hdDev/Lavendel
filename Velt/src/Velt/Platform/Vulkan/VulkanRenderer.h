@@ -7,7 +7,10 @@ namespace Velt::Renderer::Vulkan
 	class VELT_API VulkanRenderer : public RenderAPI
 	{
 	public:
-		virtual void WaitAndRender() override;
+		virtual void DrawIndexed(std::shared_ptr<VertexBuffer>& vertexBuffer, std::sghba);
+
+		virtual void 
+
 
 	private:
 		//void loadModels();

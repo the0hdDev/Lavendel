@@ -9,21 +9,6 @@
 
 namespace Velt::Renderer {
 
-
-	struct SimplePushConstantData
-	{
-		glm::mat2 transform{1.0f};
-		glm::vec2 offset;
-		alignas(16) glm::vec4 color;
-	};
-
-
-	void Renderer::requestShutdown()
-	{
-		VT_PROFILE_FUNCTION();
-		Velt::Application::s_ShutdownRequested = true;
-	};
-
 	Renderer::Renderer()
 	{
 
@@ -35,30 +20,28 @@ namespace Velt::Renderer {
 	}
 
 
-	void Renderer::setLayerStack(LayerStack* layerStack)
-	{
-
-	}
-
 	void Renderer::Shutdown()
 	{
 
 	}
 
-	void Renderer::loadModels()
+
+	
+	void Renderer::BeginScene() 
 	{
 
 	}
 
-	void Renderer::createPipelineLayout()
+	void Renderer::EndScene() 
 	{
 
 	}
 
-	void Renderer::createPipeline()
+	void Submit(const std::shared_ptr<VertexBuffer>& vertexBuffer, const std::shared_ptr<IndexBuffer>& indexBuffer)
 	{
-
+		
 	}
+
 
 
 }
