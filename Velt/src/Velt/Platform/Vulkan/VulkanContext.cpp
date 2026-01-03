@@ -48,17 +48,15 @@ namespace Velt::Renderer::Vulkan
 		CreateInstance();
 		SetupDebugMessenger();
 
+		if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), m_Instance, nullptr, &m_Surface))
+		{
+			VT_CORE_ERROR("Failed to create window surface: {}", SDL_GetError());
+		}
+
 		m_Device = new VulkanDevice();
-		m_Swapchain = new VulkanSwapchain();
 
-		SwapchainCreateInfo createInfo;
-
-		createInfo.VSync = true; 
-		createInfo.Width = window.getWidth();
-		createInfo.Height = window.getHeight(); 
-
-		m_Swapchain->Init(createInfo);
 	}
+
 
 	void VulkanContext::Shutdown()
 	{

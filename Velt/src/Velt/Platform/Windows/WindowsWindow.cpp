@@ -13,7 +13,7 @@
 
 namespace Velt 
 {
-	std::unique_ptr<Windows::WindowsWindow> Velt::Window::Create(const WindowProps& props)
+	std::unique_ptr<Window> Velt::Window::Create(const WindowProps& props)
 	{
 		VT_PROFILE_FUNCTION();
 		return std::make_unique<Windows::WindowsWindow>(props);
@@ -86,9 +86,9 @@ namespace Velt::Windows
 
 		m_Context = Renderer::Context::Create();
 		m_Context->Init();
-		CreateWindowSurface(Renderer::Vulkan::VulkanContext::GetInstance(), Renderer::Vulkan::VulkanContext::GetSurface());
+		CreateWindowSurface(Renderer::Vulkan::VulkanContext::GetInstance(), &Renderer::Vulkan::VulkanContext::GetSurface());
 
-		m_Swapchain = new Renderer::Vulkan::VulkanSwapchain();
+		m_Swapchain = std::make_unique<Renderer::Vulkan::VulkanSwapchain>();
 
 		Renderer::Vulkan::SwapchainCreateInfo createInfo{};
 
@@ -111,10 +111,10 @@ namespace Velt::Windows
 		}
 	}
 
-	void WindowsWindow::SetEventCallback(const EventCallbackFn& callback)
-	{
-		VT_PROFILE_FUNCTION();
-	}
+	//void WindowsWindow::SetEventCallback(const EventCallbackFn& callback)
+	//{
+	//	VT_PROFILE_FUNCTION();
+	//}
 
 	void WindowsWindow::SetVsync(bool enable)
 	{
@@ -135,7 +135,7 @@ namespace Velt::Windows
 		switch (Renderer::Renderer::GetAPI())
 		{
 		case Renderer::RenderAPI::API::Vulkan:
-			if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), instance, nullptr, &surface))
+			if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), instance, nullptr, surface))
 			{
 				VT_CORE_ERROR("Failed to create window surface: {}", SDL_GetError());
 			}
@@ -146,7 +146,7 @@ namespace Velt::Windows
 
 	Renderer::Vulkan::VulkanSwapchain& WindowsWindow::GetSwapchain()
 	{
-
+		return *m_Swapchain;
 	}
 
 }

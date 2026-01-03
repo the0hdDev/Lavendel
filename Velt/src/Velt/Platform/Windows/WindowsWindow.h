@@ -1,64 +1,53 @@
 #pragma once
-
-#include <memory>
-#include <string>
-#include <vulkan/vulkan.h>
-
-struct SDL_Window;
-
-namespace Velt
-{
-	class Application;
-	class Window;
-}
-
-namespace Velt::Renderer
-{
-	class Context;
-}
-
-namespace Velt::Renderer::Vulkan
-{
-	class VulkanSwapchain;
-}
+#include "Core/Window.h"
+#include "Core/Core.h"
+#include "Core/Application.h"
+#include "Renderer/RenderContext.h"
+#include "Platform/Vulkan/VulkanSwapchain.h"
+#include <SDL3/SDL.h>
 
 namespace Velt::Windows
 {
-	class VELT_API WindowsWindow : public Velt::Window
+	class VELT_API WindowsWindow : public Window
 	{
 	public:
-		WindowsWindow(const Velt::WindowProps& props);
+		WindowsWindow(const WindowProps& props);
 		virtual ~WindowsWindow();
 
 		void OnUpdate() override;
 
-		u32 GetWidth() const override;
-		u32 GetHeight() const override;
-		bool IsVsync() const override;
+		inline u32 GetWidth() const override { return m_Data.m_Width; };
+		inline u32 GetHeight() const override { return m_Data.m_Height; };
+		bool IsVsync() const override { return m_Data.m_bVsync; };
 
+		// void SetEventCallback(const EventCallbackFn& callback) override;
 		void SetVsync(bool enable) override;
 		void SetResizable(bool enable) override;
 		void* GetNativeHandle() const override;
 
-		Renderer::Vulkan::VulkanSwapchain& GetSwapchain();
 		void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
-
+		VkExtent2D GetExtent() const { return { Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight() }; }
+		Renderer::Vulkan::VulkanSwapchain& GetSwapchain();
 	private:
 		SDL_Window* m_Window = nullptr;
-		Renderer::Vulkan::VulkanSwapchain* m_Swapchain = nullptr;
 		std::unique_ptr<Renderer::Context> m_Context;
+		std::unique_ptr<Renderer::Vulkan::VulkanSwapchain> m_Swapchain;
 
-		void Init(const Velt::WindowProps& props);
-		void Shutdown();
+		virtual void Init(const WindowProps& props);
+		virtual void Shutdown();
 
 		struct WindowData
 		{
 			std::string m_Title;
-			u32 m_Width = 0, m_Height = 0;
-			bool m_bVsync = false;
-			bool m_bResizable = false;
+			u32 m_Width, m_Height;
+			bool m_bVsync;
+			bool m_bResizable;
+
+			// EventCallbackFn EventCallback;
 		};
 
 		WindowData m_Data;
+
 	};
+
 }
