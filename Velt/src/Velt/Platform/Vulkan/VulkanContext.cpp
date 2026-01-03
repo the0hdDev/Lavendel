@@ -36,7 +36,6 @@ namespace Velt::Renderer::Vulkan
 		VT_PROFILE_FUNCTION();
 
 
-		Init();
 	}
 
 	void VulkanContext::Init()
@@ -48,7 +47,6 @@ namespace Velt::Renderer::Vulkan
 
 		CreateInstance();
 		SetupDebugMessenger();
-		CreateSurface();
 
 		m_Device = new VulkanDevice();
 		m_Swapchain = new VulkanSwapchain();
@@ -220,14 +218,6 @@ namespace Velt::Renderer::Vulkan
         {
             return VK_ERROR_EXTENSION_NOT_PRESENT;
         }
-    }
-
-	void VulkanContext::CreateSurface()
-    {
-        VT_PROFILE_FUNCTION();
-        auto &window = Velt::Application::Get().GetWindow();
-
-        window.CreateWindowSurface(m_Instance, &m_Surface);
     }
 
 	void VulkanContext::SDLRequiredInstanceExtensions()

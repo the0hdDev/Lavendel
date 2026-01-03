@@ -12,7 +12,7 @@ namespace Velt::Renderer
 		virtual void Init() = 0;
 		virtual void Shutdown() = 0;
 
-		static Context* Create();
+		static std::unique_ptr<Context> Create();
 	};
 }
 

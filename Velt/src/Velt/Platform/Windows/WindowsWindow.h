@@ -1,53 +1,64 @@
 #pragma once
-#include "Core/Window.h"
-#include "Core/Application.h"
-#include "Platform/Vulkan/VulkanSwapchain.h"
-#include "Renderer/RenderContext.h"
-#include <SDL3/SDL.h>
 
-namespace Velt::Windows 
+#include <memory>
+#include <string>
+#include <vulkan/vulkan.h>
+
+struct SDL_Window;
+
+namespace Velt
 {
-	class VELT_API WindowsWindow : public Window 
+	class Application;
+	class Window;
+}
+
+namespace Velt::Renderer
+{
+	class Context;
+}
+
+namespace Velt::Renderer::Vulkan
+{
+	class VulkanSwapchain;
+}
+
+namespace Velt::Windows
+{
+	class VELT_API WindowsWindow : public Velt::Window
 	{
 	public:
-		WindowsWindow(const WindowProps& props);
+		WindowsWindow(const Velt::WindowProps& props);
 		virtual ~WindowsWindow();
 
 		void OnUpdate() override;
 
-		inline u32 getWidth() const override { return m_Data.m_Width; };
-		inline u32 getHeight() const override { return m_Data.m_Height; };
-		bool isVsync() const override { return m_Data.m_bVsync; };
+		u32 GetWidth() const override;
+		u32 GetHeight() const override;
+		bool IsVsync() const override;
 
-		void setEventCallback(const EventCallbackFn& callback) override;
-		void setVsync(bool enable) override;
-		void setResizable(bool enable) override;
+		void SetVsync(bool enable) override;
+		void SetResizable(bool enable) override;
 		void* GetNativeHandle() const override;
-		Renderer::Vulkan::VulkanSwapchain& GetSwapchain(); 
 
-		void CreateWindowSurface(void* instance, void* surface);
-		VkExtent2D GetExtent() const {	return { Application::Get().GetWindow().getWidth(), Application::Get().GetWindow().getHeight() };	}
+		Renderer::Vulkan::VulkanSwapchain& GetSwapchain();
+		void CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface);
 
 	private:
 		SDL_Window* m_Window = nullptr;
-		Renderer::Vulkan::VulkanSwapchain* m_Swapchain; 
+		Renderer::Vulkan::VulkanSwapchain* m_Swapchain = nullptr;
 		std::unique_ptr<Renderer::Context> m_Context;
-		
-		virtual void Init(const WindowProps& props);
-		virtual void Shutdown();
 
-		struct WindowData 
+		void Init(const Velt::WindowProps& props);
+		void Shutdown();
+
+		struct WindowData
 		{
 			std::string m_Title;
-			u32 m_Width, m_Height;
-			bool m_bVsync;
-			bool m_bResizable; 
-
-			EventCallbackFn EventCallback; 
+			u32 m_Width = 0, m_Height = 0;
+			bool m_bVsync = false;
+			bool m_bResizable = false;
 		};
 
-		WindowData m_Data; 
-
+		WindowData m_Data;
 	};
-
 }

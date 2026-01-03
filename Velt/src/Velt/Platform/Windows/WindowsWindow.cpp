@@ -1,18 +1,22 @@
 #include "WindowsWindow.h"
 #include "Core/Application.h"
 #include <SDL3/SDL.h>
+#include "Core/Window.h"
 #include <SDL3/SDL_vulkan.h>
 #include "Velt/Renderer/Renderer.h"
 #include "Velt/Platform/Vulkan/VulkanSwapchain.h"
 #include "Velt/Platform/Vulkan/VulkanContext.h"
 #include "Renderer/RenderAPI.h"
+#include "Renderer/RenderContext.h"
+#include <vulkan/vulkan.h>
+
 
 namespace Velt 
 {
-	Velt::Window* Velt::Window::Create(const WindowProps& props)
+	std::unique_ptr<Windows::WindowsWindow> Velt::Window::Create(const WindowProps& props)
 	{
 		VT_PROFILE_FUNCTION();
-		return new Windows::WindowsWindow(props);
+		return std::make_unique<Windows::WindowsWindow>(props);
 	}
 }
 
@@ -80,8 +84,10 @@ namespace Velt::Windows
 		SDL_PropertiesID sdlProps = SDL_GetWindowProperties(m_Window);
 		SDL_SetPointerProperty(sdlProps, "WindowInstance", this);
 
-		m_Context = std::make_unique<Renderer::Context>(Renderer::Context::Create());
-		
+		m_Context = Renderer::Context::Create();
+		m_Context->Init();
+		CreateWindowSurface(Renderer::Vulkan::VulkanContext::GetInstance(), Renderer::Vulkan::VulkanContext::GetSurface());
+
 		m_Swapchain = new Renderer::Vulkan::VulkanSwapchain();
 
 		Renderer::Vulkan::SwapchainCreateInfo createInfo{};
@@ -105,31 +111,31 @@ namespace Velt::Windows
 		}
 	}
 
-	void WindowsWindow::setEventCallback(const EventCallbackFn& callback)
+	void WindowsWindow::SetEventCallback(const EventCallbackFn& callback)
 	{
 		VT_PROFILE_FUNCTION();
 	}
 
-	void WindowsWindow::setVsync(bool enable)
+	void WindowsWindow::SetVsync(bool enable)
 	{
 		VT_PROFILE_FUNCTION();
 	
 		m_Data.m_bVsync = enable;
 	}
 
-	void WindowsWindow::setResizable(bool enable)
+	void WindowsWindow::SetResizable(bool enable)
 	{
 		VT_PROFILE_FUNCTION();
 	}
 
-	void WindowsWindow::CreateWindowSurface(void* instance, void* surface)
+	void WindowsWindow::CreateWindowSurface(VkInstance instance, VkSurfaceKHR* surface)
 	{
 		VT_PROFILE_FUNCTION();
 
 		switch (Renderer::Renderer::GetAPI())
 		{
 		case Renderer::RenderAPI::API::Vulkan:
-			if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), static_cast<VkInstance>(instance), nullptr, static_cast<VkSurfaceKHR*>(surface)))
+			if (!SDL_Vulkan_CreateSurface(static_cast<SDL_Window*>(Application::Get().GetWindow().GetNativeHandle()), instance, nullptr, &surface))
 			{
 				VT_CORE_ERROR("Failed to create window surface: {}", SDL_GetError());
 			}
@@ -137,5 +143,10 @@ namespace Velt::Windows
 	}
 
  
+
+	Renderer::Vulkan::VulkanSwapchain& WindowsWindow::GetSwapchain()
+	{
+
+	}
 
 }

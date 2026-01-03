@@ -120,7 +120,6 @@ namespace Velt {
 				case SDL_EVENT_QUIT:
 					{
 						VT_PROFILE_SCOPE("WindowClose Event");
-						Renderer::Renderer::requestShutdown();
 						WindowCloseEvent e; 
 						OnEvent(e); 
 					}

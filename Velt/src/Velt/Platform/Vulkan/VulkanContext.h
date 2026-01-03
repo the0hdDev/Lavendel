@@ -24,10 +24,8 @@ namespace Velt::Renderer::Vulkan
 		static VkInstance& GetInstance() { return m_Instance; }
 		static VkSurfaceKHR& GetSurface() { return m_Surface; }
 
-
-
 	private:
-		bool m_EnableValidationLayers; 
+		bool m_EnableValidationLayers;
 		void SDLRequiredInstanceExtensions();
 		std::vector<const char*> GetRequiredExtensions();
 		bool CheckValidationLayerSupport();
@@ -36,19 +34,15 @@ namespace Velt::Renderer::Vulkan
 
 		void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 		void SetupDebugMessenger();
-		VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkDebugUtilsMessengerEXT *pDebugMessenger);
+		VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
 		void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
 
 		VkDebugUtilsMessengerEXT m_DebugMessenger;
-		static VkInstance m_Instance; 
+		static VkInstance m_Instance;
 		static VulkanDevice* m_Device;
 		static VkSurfaceKHR m_Surface;
 		VulkanSwapchain* m_Swapchain;
 
 		const std::vector<const char*> m_ValidationLayers = { "VK_LAYER_KHRONOS_validation" };
-		
-
-
-		
 	};
 }

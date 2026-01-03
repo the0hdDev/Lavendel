@@ -30,7 +30,7 @@ namespace Velt::Renderer
 
 	private:
 
-		static RenderAPI 
+		
 
 	};
 }
